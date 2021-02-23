@@ -3,7 +3,7 @@ import SendIcon from '@material-ui/icons/Send';
 
 export default function Search(props) {
 
-  const { history, inputRef, setResults, searchTerm, setSearchTerm, setIsLoading, classes } = props
+  const { history, inputRef, setResults, searchTerm, setSearchTerm, setIsLoading, classes, setActiveStep } = props
   const { REACT_APP_APP_ID, REACT_APP_APP_KEY } = process.env;
 
   function handleSearch(event) {
@@ -15,6 +15,7 @@ export default function Search(props) {
       .then(data => {
         setResults(data.hits);
         setIsLoading(false)
+        setActiveStep(1)
         history.push('/filters')
       })
       .catch(err => {

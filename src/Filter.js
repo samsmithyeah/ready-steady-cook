@@ -9,7 +9,7 @@ export default function Filter(props) {
 
   const [newFilter, setNewFilter] = useState("");
 
-  const { history, filters, inputRef, handleRestartClick, setFilters, setFilteredResults, searchTerm, results } = props;
+  const { setActiveStep, history, filters, inputRef, handleRestartClick, setFilters, setFilteredResults, searchTerm, results } = props;
 
   function handleAddFilter(event) {
     event.preventDefault();
@@ -29,6 +29,7 @@ export default function Filter(props) {
         return result.recipe.ingredientLines.toString().toLowerCase().includes(filter.toLowerCase())
       })
     }))
+    setActiveStep(2)
     history.push("/results")
   }
 
