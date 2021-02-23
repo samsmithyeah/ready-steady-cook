@@ -4,7 +4,7 @@ export default function Progress(props) {
 
   const { activeStep } = props;
 
-  const steps = ['Enter primary ingredient', 'Enter other ingredients', 'Results']
+  const steps = ['Primary ingredient', 'Other ingredients', 'Results']
 
   return (
     <>

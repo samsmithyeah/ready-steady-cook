@@ -32,8 +32,20 @@ export default function App() {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname === "/" || location.pathname === "/filters") {
-      inputRef.current.focus();
+    switch (location.pathname) {
+      case "/":
+        inputRef.current.focus();
+        setActiveStep(0)
+        break;
+      case "/filters":
+        inputRef.current.focus();
+        setActiveStep(1)
+        break;
+      case "/results":
+        setActiveStep(3)
+        break;
+      default:
+        history.push("/")
     }
   }, [location]);
 
@@ -42,7 +54,6 @@ export default function App() {
     setSearchTerm("")
     setFilters([])
     setFilteredResults([])
-    setActiveStep(0)
     history.push("/")
   }
 
@@ -54,10 +65,10 @@ export default function App() {
           <Progress activeStep={activeStep}/>
           <Switch>
             <Route exact path="/">
-              {isLoading ? <CircularProgress /> : <Search setActiveStep={setActiveStep} history={history} inputRef={inputRef} searchTerm={searchTerm} setSearchTerm={setSearchTerm} setResults={setResults} setIsLoading={setIsLoading} classes={classes} />}
+              {isLoading ? <CircularProgress /> : <Search history={history} inputRef={inputRef} searchTerm={searchTerm} setSearchTerm={setSearchTerm} setResults={setResults} setIsLoading={setIsLoading} classes={classes} />}
             </Route>
             <Route exact path="/filters"> 
-              <Filter setActiveStep={setActiveStep} filters={filters} history={history} results={results} searchTerm={searchTerm} inputRef={inputRef} handleRestartClick={handleRestartClick} setFilters={setFilters} setFilteredResults={setFilteredResults}/>
+              <Filter filters={filters} history={history} results={results} searchTerm={searchTerm} inputRef={inputRef} handleRestartClick={handleRestartClick} setFilters={setFilters} setFilteredResults={setFilteredResults}/>
             </Route>
             <Route exact path="/results">
               <Results results={results} filters={filters} searchTerm={searchTerm} filteredResults={filteredResults} handleRestartClick={handleRestartClick}/>
