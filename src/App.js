@@ -54,7 +54,6 @@ export default function App() {
     setSearchTerm("")
     setFilters([])
     setFilteredResults([])
-    setActiveStep(0)
     history.push("/")
   }
 
