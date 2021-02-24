@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
       textAlign: 'center',
       alignItems: 'center',
-      maxWidth: 800
     },
   },
   large: {
