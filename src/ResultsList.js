@@ -1,19 +1,24 @@
-import { Link, List, ListItem } from '@material-ui/core';
+import { Container, Link, List, ListItem, ListItemAvatar, Avatar, ListItemText } from '@material-ui/core';
 
 export default function ResultsList(props) {
-  const { results } = props;
+  const { results, classes } = props;
   return (
-    <div>
-      <List>
+    <Container className={classes.root}>
+      <List className={classes.root}>
         {results.map(result => {
           return (
             <ListItem key={result.recipe.url}>
-              <Link key={result.recipe.url} href={result.recipe.url} target="_blank">{result.recipe.label}</Link>
+                <ListItemAvatar>
+                  <Avatar alt={result.recipe.label} src={result.recipe.image} className={classes.large}/>
+              </ListItemAvatar>
+              <Link href={result.recipe.url} target="_blank" rel="noreferrer">
+                <ListItemText primary={result.recipe.label} secondary={result.recipe.source} />
+              </Link>
             </ListItem>
           )
         })}
-      </List>
-    </div>
+        </List>
+      </Container>
   )
 }
 
