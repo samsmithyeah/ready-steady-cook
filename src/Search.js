@@ -1,4 +1,4 @@
-import { Button, TextField } from '@material-ui/core';
+import { Button, TextField, Typography } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 
 export default function Search(props) {
@@ -25,7 +25,7 @@ export default function Search(props) {
   return (
     <>
       <div>
-        <h1>What's in your fridge?</h1>
+        <Typography variant="h4" gutterBottom>What's in your fridge?</Typography>
       </div> 
       <div>
         <form noValidate className={classes.root} autoComplete="off" onSubmit={handleSearch}>

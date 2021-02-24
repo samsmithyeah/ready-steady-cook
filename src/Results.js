@@ -1,12 +1,12 @@
-import { Button } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 import ResultsList from './ResultsList.js'
 
 export default function Results(props) {
 
-  const { results, filters, searchTerm, filteredResults, handleRestartClick, classes } = props;
+  const { filters, searchTerm, filteredResults, handleRestartClick, classes } = props;
 
   function resultsHeading() {
-    if (results.length === 0 || filteredResults.length === 0 ) {
+    if (filteredResults.length === 0) {
       return 'No results found 😢'
     }
     if (filters.length === 0) {
@@ -19,11 +19,11 @@ export default function Results(props) {
   }
 
   return (
-    <>
-      <h1>{resultsHeading()} </h1>
-      {filters.length === 0 ? <ResultsList classes={classes} results={results} /> : <ResultsList classes={classes} results={filteredResults} />}
-      <br />
+    <div className={classes.root}>
+      <Typography variant="h4" gutterBottom>{resultsHeading()} </Typography>
+      {filteredResults.length > 0 && <Typography variant="subtitle2" gutterBottom>{filteredResults.length} results</Typography>}
+      <ResultsList classes={classes} results={filteredResults} />
       <Button onClick={handleRestartClick}>Start again</Button>
-    </>
+    </div>
   )
 }
