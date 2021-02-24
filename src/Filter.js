@@ -1,4 +1,4 @@
-import { Button, IconButton, TextField } from '@material-ui/core';
+import { Button, IconButton, TextField, Typography } from '@material-ui/core';
 import FilterChips from './FilterChips.js'
 import AddIcon from '@material-ui/icons/Add';
 import SendIcon from '@material-ui/icons/Send';
@@ -24,17 +24,22 @@ export default function Filter(props) {
   }
 
   function handleFilterResults() {
-    setFilteredResults(results.filter(result => {
-      return filters.every(filter => {
-        return result.recipe.ingredientLines.toString().toLowerCase().includes(filter.toLowerCase())
-      })
-    }))
+    if (filters.length === 0) {
+      setFilteredResults(results)
+    } else {
+      setFilteredResults(results.filter(result => {
+        return filters.every(filter => {
+          return result.recipe.ingredientLines.toString().toLowerCase().includes(filter.toLowerCase())
+        })
+      }))
+    }
+    
     history.push("/results")
   }
 
   return (
     <>
-      <h1>What would you like with your {searchTerm}?</h1>
+      <Typography variant="h4" gutterBottom>What would you like with your {searchTerm}?</Typography>
       <form noValidate autoComplete="off" onSubmit={handleAddFilter}>
         <TextField inputRef={inputRef} id="standard-basic" value={newFilter} onChange={e => setNewFilter(e.target.value)} />
         <IconButton disabled={newFilter.length === 0} variant="contained" color="primary" type="submit"><AddIcon /></IconButton>
