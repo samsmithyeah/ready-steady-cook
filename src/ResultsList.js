@@ -1,7 +1,17 @@
 import { Container, Link, List, ListItem, ListItemAvatar, Avatar, ListItemText } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    maxWidth: 360
+  },
+}));
 
 export default function ResultsList(props) {
-  const { results, classes } = props;
+  const classes = useStyles();
+  const { results } = props;
   return (
     <Container className={classes.root}>
       <List className={classes.root}>
