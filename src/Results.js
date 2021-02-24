@@ -3,7 +3,7 @@ import ResultsList from './ResultsList.js'
 
 export default function Results(props) {
 
-  const { results, filters, searchTerm, filteredResults, handleRestartClick } = props;
+  const { results, filters, searchTerm, filteredResults, handleRestartClick, classes } = props;
 
   function resultsHeading() {
     if (results.length === 0 || filteredResults.length === 0 ) {
@@ -21,7 +21,7 @@ export default function Results(props) {
   return (
     <>
       <h1>{resultsHeading()} </h1>
-      {filters.length === 0 ? <ResultsList results={results} /> : <ResultsList results={filteredResults} />}
+      {filters.length === 0 ? <ResultsList classes={classes} results={results} /> : <ResultsList classes={classes} results={filteredResults} />}
       <br />
       <Button onClick={handleRestartClick}>Start again</Button>
     </>

@@ -14,8 +14,12 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
       textAlign: 'center',
       alignItems: 'center',
-      justifyContent: 'center'
+      maxWidth: 800
     },
+  },
+  large: {
+    width: theme.spacing(7),
+    height: theme.spacing(7),
   },
 }));
 
@@ -71,7 +75,7 @@ export default function App() {
               <Filter filters={filters} history={history} results={results} searchTerm={searchTerm} inputRef={inputRef} handleRestartClick={handleRestartClick} setFilters={setFilters} setFilteredResults={setFilteredResults}/>
             </Route>
             <Route exact path="/results">
-              <Results results={results} filters={filters} searchTerm={searchTerm} filteredResults={filteredResults} handleRestartClick={handleRestartClick}/>
+              <Results classes={classes} results={results} filters={filters} searchTerm={searchTerm} filteredResults={filteredResults} handleRestartClick={handleRestartClick}/>
             </Route>
           </Switch>
         </Box>

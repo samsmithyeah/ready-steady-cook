@@ -31,7 +31,7 @@ export default function Search(props) {
         <form noValidate className={classes.root} autoComplete="off" onSubmit={handleSearch}>
           <TextField inputRef={inputRef} id="outlined-basic" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
           <br />
-          <Button disabled={searchTerm.length === 0} variant="contained" color="primary" type="submit" endIcon={<SendIcon />}>Next</Button>
+          <Button size='large' disabled={searchTerm.length === 0} variant="contained" color="primary" type="submit" endIcon={<SendIcon />}>Next</Button>
         </form>
       </div>
     </>
