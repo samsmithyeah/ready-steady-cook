@@ -1,6 +1,6 @@
 # Ready, Steady, Cook!
 ### Find recipes based on ingredients in your fridge
-This is a project to help me learn React and coding in general. 
+This is a project to help me learn React and coding in general. It's currently deployed to https://ready-steady-cook.netlify.app/. 
 
 It uses the Edamam recipe API - further details at https://developer.edamam.com/. 
 
