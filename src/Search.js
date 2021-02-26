@@ -9,7 +9,7 @@ export default function Search(props) {
   function handleSearch(event) {
     event.preventDefault();
     setIsLoading(true)
-    fetch(`https://api.edamam.com/search?q=${searchTerm}&app_id=${REACT_APP_APP_ID}&app_key=${REACT_APP_APP_KEY}&to=100`)
+    fetch(`https://api.edamam.com/search?q=${searchTerm.toLowerCase()}&app_id=${REACT_APP_APP_ID}&app_key=${REACT_APP_APP_KEY}&to=100`)
       .then(response => response.json())
       .then(data => {
         setResults(data.hits);
@@ -22,6 +22,10 @@ export default function Search(props) {
       }); 
   }
 
+  function handleSetSearchTerm(event) {
+    setSearchTerm(event.target.value)
+  }
+
   return (
     <>
       <div>
@@ -29,7 +33,7 @@ export default function Search(props) {
       </div> 
       <div>
         <form noValidate className={classes.root} autoComplete="off" onSubmit={handleSearch}>
-          <TextField inputRef={inputRef} id="outlined-basic" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+          <TextField inputRef={inputRef} id="outlined-basic" value={searchTerm} onChange={handleSetSearchTerm} />
           <br />
           <Button size='large' disabled={searchTerm.length === 0} variant="contained" color="primary" type="submit" endIcon={<SendIcon />}>Next</Button>
         </form>

@@ -1,10 +1,17 @@
-import { Container, Link, List, ListItem, ListItemAvatar, Avatar, ListItemText } from '@material-ui/core';
+import {
+  Container,
+  Link,
+  List,
+  ListItem,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%'
+    width: '100%',
   },
 }));
 
@@ -13,21 +20,27 @@ export default function ResultsList(props) {
   const { results } = props;
   return (
     <Container className={classes.root}>
-      <List className={classes.root}>
-        {results.map(result => {
+      <List>
+        {results.map((result) => {
           return (
-            <ListItem key={result.recipe.url}>
+            <Link href={result.recipe.url} target="_blank" rel="noreferrer">
+              <ListItem key={result.recipe.url}>
                 <ListItemAvatar>
-                  <Avatar alt={result.recipe.label} src={result.recipe.image} className={classes.large}/>
-              </ListItemAvatar>
-              <Link href={result.recipe.url} target="_blank" rel="noreferrer">
-                <ListItemText primary={result.recipe.label} secondary={result.recipe.source} />
-              </Link>
-            </ListItem>
-          )
+                  <Avatar
+                    alt={result.recipe.label}
+                    src={result.recipe.image}
+                    className={classes.large}
+                  />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={result.recipe.label}
+                  secondary={result.recipe.source}
+                />
+              </ListItem>
+            </Link>
+          );
         })}
-        </List>
-      </Container>
-  )
+      </List>
+    </Container>
+  );
 }
-
