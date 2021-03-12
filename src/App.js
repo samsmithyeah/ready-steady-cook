@@ -6,6 +6,8 @@ import Results from './Results.js';
 import Search from './Search.js';
 import Filter from './Filter.js';
 import Progress from './Progress.js';
+import { useSelector, useDispatch } from 'react-redux';
+import { addSearchTerm, clearFilters } from './ingredientsSlice.js';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,15 +25,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function App() {
   const classes = useStyles();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [results, setResults] = useState([]);
-  const [filters, setFilters] = useState([]);
-  const [filteredResults, setFilteredResults] = useState([]);
+  // const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const inputRef = useRef();
   const history = useHistory();
   const location = useLocation();
+
+  const searchTerm = useSelector((state) => state.ingredients.searchTerm);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     switch (location.pathname) {
@@ -54,9 +57,8 @@ export default function App() {
   }, [location, history, searchTerm]);
 
   function handleRestartClick() {
-    setSearchTerm('');
-    setFilters([]);
-    setFilteredResults([]);
+    dispatch(addSearchTerm(''));
+    dispatch(clearFilters());
     history.push('/');
   }
 
@@ -73,9 +75,6 @@ export default function App() {
                 <Search
                   history={history}
                   inputRef={inputRef}
-                  searchTerm={searchTerm}
-                  setSearchTerm={setSearchTerm}
-                  setResults={setResults}
                   setIsLoading={setIsLoading}
                   classes={classes}
                 />
@@ -83,24 +82,14 @@ export default function App() {
             </Route>
             <Route exact path="/filters">
               <Filter
-                filters={filters}
                 history={history}
-                results={results}
-                searchTerm={searchTerm}
                 inputRef={inputRef}
                 handleRestartClick={handleRestartClick}
-                setFilters={setFilters}
-                filteredResults={filteredResults}
-                setFilteredResults={setFilteredResults}
               />
             </Route>
             <Route exact path="/results">
               <Results
                 classes={classes}
-                results={results}
-                filters={filters}
-                searchTerm={searchTerm}
-                filteredResults={filteredResults}
                 handleRestartClick={handleRestartClick}
               />
             </Route>
