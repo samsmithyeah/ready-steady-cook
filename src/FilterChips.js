@@ -1,7 +1,10 @@
 import { Chip, Paper } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 
 export default function FilterChips(props) {
-  const { filters, onDelete } = props;
+  const { onDelete } = props;
+  const filters = useSelector((state) => state.ingredients.filters);
+
   return (
     <div>
       <Paper elevation={0}>
