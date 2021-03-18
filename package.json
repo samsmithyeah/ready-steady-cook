@@ -39,6 +39,8 @@
     ]
   },
   "devDependencies": {
+    "cypress": "^6.6.0",
+    "eslint-plugin-cypress": "^2.11.2",
     "fontsource-roboto": "^4.0.0",
     "prettier": "2.2.1"
   }
