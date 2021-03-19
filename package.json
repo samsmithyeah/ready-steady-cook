@@ -44,7 +44,12 @@
     "cypress": "^6.6.0",
     "eslint-plugin-cypress": "^2.11.2",
     "fontsource-roboto": "^4.0.0",
+<<<<<<< HEAD
     "netlify-plugin-cypress": "^2.1.0",
     "prettier": "2.2.1"
+=======
+    "prettier": "2.2.1",
+    "react-test-renderer": "^17.0.1"
+>>>>>>> 8604f19995d8cf07b6fc12fe4c6b1d22fb76d53e
   }
 }
