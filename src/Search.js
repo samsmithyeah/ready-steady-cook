@@ -51,10 +51,7 @@ export default function Search(props) {
         >
           <TextField
             inputRef={inputRef}
-<<<<<<< HEAD
             id="search"
-=======
->>>>>>> 8604f19995d8cf07b6fc12fe4c6b1d22fb76d53e
             inputProps={{ 'aria-label': 'search' }}
             onChange={handleSetSearchTerm}
           />
