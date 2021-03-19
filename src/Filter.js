@@ -10,50 +10,51 @@ import AddIcon from '@material-ui/icons/Add';
 import SendIcon from '@material-ui/icons/Send';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { addFilter, deleteFilter } from './ingredientsSlice.js';
+import { filter } from './resultsSlice.js';
 
 export default function Filter(props) {
   const [newFilter, setNewFilter] = useState('');
 
-  const {
-    history,
-    filters,
-    inputRef,
-    handleRestartClick,
-    setFilters,
-    setFilteredResults,
-    searchTerm,
-    results,
-    filteredResults,
-  } = props;
+  const filters = useSelector((state) => state.ingredients.filters);
+  const results = useSelector((state) => state.results.unfiltered);
+  const filteredResults = useSelector((state) => state.results.filtered);
+  const searchTerm = useSelector((state) => state.ingredients.searchTerm);
+
+  const dispatch = useDispatch();
+
+  const { history, inputRef, handleRestartClick } = props;
 
   useEffect(() => {
     if (filters.length === 0) {
-      setFilteredResults(results);
+      dispatch(filter(results));
     } else {
-      setFilteredResults(
-        results.filter((result) => {
-          return filters.every((filter) => {
-            return result.recipe.ingredientLines
-              .toString()
-              .toLowerCase()
-              .includes(filter.toLowerCase());
-          });
-        }),
+      dispatch(
+        filter(
+          results.filter((result) => {
+            return filters.every((filter) => {
+              return result.recipe.ingredientLines
+                .toString()
+                .toLowerCase()
+                .includes(filter);
+            });
+          }),
+        ),
       );
     }
-  }, [filters, results, setFilteredResults]);
+  }, [dispatch, filters, results]);
 
   function handleAddFilter(event) {
     event.preventDefault();
 
-    !filters.includes(newFilter) &&
-      setFilters([...filters, newFilter.toLowerCase()]);
+    dispatch(addFilter(newFilter));
 
     setNewFilter('');
   }
 
-  function handleDeleteFilter(toDelete) {
-    setFilters(filters.filter((filter) => filter !== toDelete));
+  function handleDeleteFilter(filterToDelete) {
+    dispatch(deleteFilter(filterToDelete));
   }
 
   function handleFilterResults() {
@@ -93,7 +94,7 @@ export default function Filter(props) {
             <AddIcon />
           </IconButton>
         </form>
-        <FilterChips filters={filters} onDelete={handleDeleteFilter} />
+        <FilterChips onDelete={handleDeleteFilter} />
       </Box>
       <Button
         variant="contained"

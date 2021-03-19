@@ -1,17 +1,17 @@
 import { Button, TextField, Typography } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
+import { useSelector, useDispatch } from 'react-redux';
+import { search } from './resultsSlice.js';
+import { addSearchTerm } from './ingredientsSlice.js';
 
 export default function Search(props) {
-  const {
-    history,
-    inputRef,
-    setResults,
-    searchTerm,
-    setSearchTerm,
-    setIsLoading,
-    classes,
-  } = props;
+  const { history, inputRef, setIsLoading, classes } = props;
+
   const { REACT_APP_APP_ID, REACT_APP_APP_KEY } = process.env;
+
+  const dispatch = useDispatch();
+
+  const searchTerm = useSelector((state) => state.ingredients.searchTerm);
 
   function handleSearch(event) {
     event.preventDefault();
@@ -21,7 +21,7 @@ export default function Search(props) {
     )
       .then((response) => response.json())
       .then((data) => {
-        setResults(data.hits);
+        dispatch(search(data.hits));
         setIsLoading(false);
         history.push('/filters');
       })
@@ -32,7 +32,7 @@ export default function Search(props) {
   }
 
   function handleSetSearchTerm(event) {
-    setSearchTerm(event.target.value);
+    dispatch(addSearchTerm(event.target.value));
   }
 
   return (
@@ -52,7 +52,7 @@ export default function Search(props) {
           <TextField
             inputRef={inputRef}
             id="search"
-            value={searchTerm}
+            inputProps={{ 'aria-label': 'search' }}
             onChange={handleSetSearchTerm}
           />
           <br />
