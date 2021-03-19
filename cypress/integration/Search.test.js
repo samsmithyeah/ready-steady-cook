@@ -7,7 +7,7 @@ describe('Primary ingredient search', () => {
   });
 
   it('Displays title', () => {
-    cy.contains('h4', "What's in your fridge?");
+    cy.contains('h4', "What's in your fridge? wuuuuuut");
   });
   it('Submit button enables and disables correctly', () => {
     cy.contains('Next').should('be.disabled');
