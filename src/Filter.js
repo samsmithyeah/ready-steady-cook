@@ -1,4 +1,10 @@
-import { Box, Button, IconButton, TextField, Typography } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  IconButton,
+  TextField,
+  Typography,
+} from '@material-ui/core';
 import FilterChips from './FilterChips.js';
 import AddIcon from '@material-ui/icons/Add';
 import SendIcon from '@material-ui/icons/Send';
@@ -73,7 +79,7 @@ export default function Filter(props) {
         <form noValidate autoComplete="off" onSubmit={handleAddFilter}>
           <TextField
             inputRef={inputRef}
-            id="standard-basic"
+            id="filter"
             value={newFilter}
             onChange={(e) => setNewFilter(e.target.value)}
           />
@@ -82,6 +88,7 @@ export default function Filter(props) {
             variant="contained"
             color="primary"
             type="submit"
+            id="add-filter"
           >
             <AddIcon />
           </IconButton>

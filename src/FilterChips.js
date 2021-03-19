@@ -4,7 +4,7 @@ export default function FilterChips(props) {
   const { filters, onDelete } = props;
   return (
     <div>
-      <Paper elevation={0}>
+      <Paper id="filter-chips" elevation={0}>
         {filters.map((filter) => {
           return (
             <Chip
