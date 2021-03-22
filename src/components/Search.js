@@ -1,8 +1,8 @@
 import { Button, TextField, Typography } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import { useSelector, useDispatch } from 'react-redux';
-import { search } from './resultsSlice.js';
-import { addSearchTerm } from './ingredientsSlice.js';
+import { search } from '../redux/resultsSlice.js';
+import { addSearchTerm } from '../redux/ingredientsSlice.js';
 
 export default function Search(props) {
   const { history, inputRef, setIsLoading, classes } = props;
@@ -11,7 +11,7 @@ export default function Search(props) {
 
   const dispatch = useDispatch();
 
-  const searchTerm = useSelector((state) => state.ingredients.searchTerm);
+  const { searchTerm } = useSelector((state) => state.ingredients);
 
   function handleSearch(event) {
     event.preventDefault();

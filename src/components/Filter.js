@@ -11,28 +11,27 @@ import SendIcon from '@material-ui/icons/Send';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addFilter, deleteFilter } from './ingredientsSlice.js';
-import { filter } from './resultsSlice.js';
+import { addFilter, deleteFilter } from '../redux/ingredientsSlice.js';
+import { filter } from '../redux/resultsSlice.js';
 
 export default function Filter(props) {
   const [newFilter, setNewFilter] = useState('');
 
-  const filters = useSelector((state) => state.ingredients.filters);
-  const results = useSelector((state) => state.results.unfiltered);
-  const filteredResults = useSelector((state) => state.results.filtered);
-  const searchTerm = useSelector((state) => state.ingredients.searchTerm);
-
+  const { filters, searchTerm } = useSelector((state) => state.ingredients);
+  const { filteredResults, unfilteredResults } = useSelector(
+    (state) => state.results,
+  );
   const dispatch = useDispatch();
 
   const { history, inputRef, handleRestartClick } = props;
 
   useEffect(() => {
     if (filters.length === 0) {
-      dispatch(filter(results));
+      dispatch(filter(unfilteredResults));
     } else {
       dispatch(
         filter(
-          results.filter((result) => {
+          unfilteredResults.filter((result) => {
             return filters.every((filter) => {
               return result.recipe.ingredientLines
                 .toString()
@@ -43,7 +42,7 @@ export default function Filter(props) {
         ),
       );
     }
-  }, [dispatch, filters, results]);
+  }, [dispatch, filters, unfilteredResults]);
 
   function handleAddFilter(event) {
     event.preventDefault();
