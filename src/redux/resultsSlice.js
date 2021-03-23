@@ -3,15 +3,15 @@ import { createSlice } from '@reduxjs/toolkit';
 export const resultsSlice = createSlice({
   name: 'results',
   initialState: {
-    unfiltered: [],
-    filtered: [],
+    unfilteredResults: [],
+    filteredResults: [],
   },
   reducers: {
     search: (state, action) => {
-      state.unfiltered = action.payload;
+      state.unfilteredResults = action.payload;
     },
     filter: (state, action) => {
-      state.filtered = action.payload;
+      state.filteredResults = action.payload;
     },
   },
 });

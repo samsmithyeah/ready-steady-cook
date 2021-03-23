@@ -6,9 +6,8 @@ import { useSelector } from 'react-redux';
 export default function Results(props) {
   const { handleRestartClick, classes } = props;
 
-  const filteredResults = useSelector((state) => state.results.filtered);
-  const filters = useSelector((state) => state.ingredients.filters);
-  const searchTerm = useSelector((state) => state.ingredients.searchTerm);
+  const { filteredResults } = useSelector((state) => state.results);
+  const { filters, searchTerm } = useSelector((state) => state.ingredients);
 
   function resultsHeading() {
     if (filteredResults.length === 0) {

@@ -2,12 +2,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, CircularProgress } from '@material-ui/core';
 import { useEffect, useState, useRef } from 'react';
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
-import Results from './Results.js';
-import Search from './Search.js';
-import Filter from './Filter.js';
-import Progress from './Progress.js';
+import Results from './components/Results.js';
+import Search from './components/Search.js';
+import Filter from './components/Filter.js';
+import Progress from './components/Progress.js';
 import { useSelector, useDispatch } from 'react-redux';
-import { addSearchTerm, clearFilters } from './ingredientsSlice.js';
+import { addSearchTerm, clearFilters } from './redux/ingredientsSlice.js';
 
 const useStyles = makeStyles((theme) => ({
   root: {
