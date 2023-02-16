@@ -29,7 +29,7 @@ describe('Navigation', () => {
   });
 
   it('shows the correct step in the progress indicator: Filter page', () => {
-    cy.get('input').type('halloumi');
+    cy.get('#search').type('halloumi');
     cy.contains('Next').click();
 
     cy.contains('span', 'Primary ingredient')
@@ -83,10 +83,10 @@ describe('Navigation', () => {
     cy.contains('View 1 result').click();
     cy.contains('Start again').click();
     cy.contains('h4', "What's in your fridge?");
-    cy.get('input').should('have.value', '');
+    cy.get('#search').should('have.value', '');
     cy.contains('Next').should('be.disabled');
 
-    cy.get('input').type('halloumi');
+    cy.get('#search').type('halloumi');
     cy.contains('Next').click();
     cy.contains('onion').should('not.exist');
   });

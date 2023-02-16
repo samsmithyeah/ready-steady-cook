@@ -52,9 +52,9 @@ describe('View results', () => {
   });
 
   it('Displays filtered results', () => {
-    cy.get('input').type('halloumi');
+    cy.get('#search').type('halloumi');
     cy.contains('Next').click();
-    cy.get('input').type('onion');
+    cy.get('#filter').type('onion');
     cy.get('#add-filter').click();
     cy.contains('View 1 result').click();
     cy.contains('h6', '1 result');
