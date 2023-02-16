@@ -1,8 +1,8 @@
 import { Button, TextField, Typography } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import { useSelector, useDispatch } from 'react-redux';
-import { search } from '../redux/resultsSlice.js';
-import { addSearchTerm } from '../redux/ingredientsSlice.js';
+import { search } from '../../redux/legacy/resultsSlice.js';
+import { addSearchTerm } from '../../redux/legacy/ingredientsSlice.js';
 
 export default function Search(props) {
   const { history, inputRef, setIsLoading, classes } = props;
@@ -32,7 +32,7 @@ export default function Search(props) {
   }
 
   function handleSetSearchTerm(event) {
-    dispatch(addSearchTerm(event.target.value));
+    dispatch(addSearchTerm(event.target.value.trim()));
   }
 
   return (
