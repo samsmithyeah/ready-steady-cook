@@ -13,7 +13,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-const REACT_APP_OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 app.post('/generate-recipe', async (req, res) => {
   const { ingredients, cuisineType } = req.body;
@@ -44,7 +44,7 @@ The recipe is as follows:`
 The recipe is as follows:`;
 
   const configuration = new Configuration({
-    apiKey: REACT_APP_OPENAI_API_KEY,
+    apiKey: OPENAI_API_KEY,
   });
   const openai = new OpenAIApi(configuration);
   const response = await openai.createCompletion({
