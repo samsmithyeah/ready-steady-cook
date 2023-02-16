@@ -2,7 +2,7 @@
 
 ### Find recipes based on ingredients in your fridge
 
-This is a project to help me learn React and coding in general. It's currently deployed to https://ready-steady-cook.netlify.app/.
+This is a project to help me learn React and coding in general. It's currently deployed to https://ready-steady-cook.netlify.app/
 
 ## AI mode
 
