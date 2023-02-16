@@ -1,22 +1,8 @@
-const express = require('express');
-const bodyParser = require('body-parser');
 const { Configuration, OpenAIApi } = require('openai');
-const cors = require('cors');
-
-const app = express();
-app.use(bodyParser.json());
-
-const corsOptions = {
-  credentials: true,
-  optionSuccessStatus: 200,
-};
-app.use(cors(corsOptions));
-
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
-app.post('/generate-recipe', async (req, res) => {
+const handler = async function (req, res) {
   const { ingredients, cuisineType } = req.body;
-
   const basePrompt = `Generate a recipe containing the following ingredients: ${ingredients.join(
     ', ',
   )}
@@ -29,6 +15,7 @@ Include the following sections in the recipe:
 - Cook time
 - Total time
 - Servings
+
 - Brief description, perhaps including the origin of the dish
 - Ingredients
 - Method`;
@@ -46,16 +33,34 @@ The recipe is as follows:`;
     apiKey: OPENAI_API_KEY,
   });
   const openai = new OpenAIApi(configuration);
-  const response = await openai.createCompletion({
-    model: 'text-davinci-003',
-    prompt,
-    max_tokens: 1000,
-    temperature: 0,
-  });
-  const recipe = response.data.choices[0].text;
-  res.send({ recipe });
-});
 
-app.listen(3001, () => {
-  console.log('Server is listening on port 3001');
-});
+  try {
+    const response = await openai.createCompletion({
+      model: 'text-davinci-003',
+      prompt,
+      max_tokens: 1000,
+      temperature: 0,
+    });
+
+    if (!response.ok) {
+      // NOT res.status >= 200 && res.status < 300
+      return { statusCode: response.status, body: response.statusText };
+    }
+    const recipe = response.data.choices[0].text;
+
+    return {
+      statusCode: 200,
+      body: recipe,
+    };
+  } catch (error) {
+    // output to netlify function log
+    console.log(error);
+    return {
+      statusCode: 500,
+      // Could be a custom message or object i.e. JSON.stringify(err)
+      body: JSON.stringify({ msg: error.message }),
+    };
+  }
+};
+
+module.exports = { handler };
