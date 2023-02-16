@@ -34,32 +34,44 @@ The recipe is as follows:`;
   });
   const openai = new OpenAIApi(configuration);
 
-  try {
-    const response = await openai.createCompletion({
-      model: 'text-davinci-003',
-      prompt,
-      max_tokens: 1000,
-      temperature: 0,
-    });
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, PUT, DELETE, OPTIONS',
+  );
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-    if (!response.ok) {
-      // NOT res.status >= 200 && res.status < 300
-      return { statusCode: response.status, body: response.statusText };
+  if (req.method === 'OPTIONS') {
+    // This is a preflight request, so return the right response
+    res.status(200).end();
+  } else {
+    try {
+      const response = await openai.createCompletion({
+        model: 'text-davinci-003',
+        prompt,
+        max_tokens: 1000,
+        temperature: 0,
+      });
+
+      if (!response.ok) {
+        // NOT res.status >= 200 && res.status < 300
+        return { statusCode: response.status, body: response.statusText };
+      }
+      const recipe = response.data.choices[0].text;
+
+      return {
+        statusCode: 200,
+        body: recipe,
+      };
+    } catch (error) {
+      // output to netlify function log
+      console.log(error);
+      return {
+        statusCode: 500,
+        // Could be a custom message or object i.e. JSON.stringify(err)
+        body: JSON.stringify({ msg: error.message }),
+      };
     }
-    const recipe = response.data.choices[0].text;
-
-    return {
-      statusCode: 200,
-      body: recipe,
-    };
-  } catch (error) {
-    // output to netlify function log
-    console.log(error);
-    return {
-      statusCode: 500,
-      // Could be a custom message or object i.e. JSON.stringify(err)
-      body: JSON.stringify({ msg: error.message }),
-    };
   }
 };
 
