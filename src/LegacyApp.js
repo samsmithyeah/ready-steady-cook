@@ -3,6 +3,7 @@ import { CircularProgress } from '@material-ui/core';
 import Search from './components/legacy/Search';
 import Filter from './components/legacy/Filter';
 import Results from './components/legacy/Results';
+import Progress from './components/common/Progress';
 import {
   addSearchTerm,
   clearFilters,
@@ -10,7 +11,15 @@ import {
 import { useDispatch } from 'react-redux';
 
 export default function LegacyApp(props) {
-  const { classes, isLoading, setIsLoading, inputRef, history } = props;
+  const {
+    classes,
+    isLoading,
+    setIsLoading,
+    inputRef,
+    history,
+    activeStep,
+  } = props;
+  const steps = ['Primary ingredient', 'Other ingredients', 'Results'];
   const dispatch = useDispatch();
 
   function handleRestartClick() {
@@ -21,6 +30,7 @@ export default function LegacyApp(props) {
 
   return (
     <>
+      <Progress activeStep={activeStep} steps={steps} />
       <Switch>
         <Route exact path="/">
           {isLoading ? (

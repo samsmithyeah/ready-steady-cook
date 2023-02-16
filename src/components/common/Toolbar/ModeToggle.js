@@ -10,7 +10,7 @@ export default function ModeToggle(props) {
           <Switch
             checked={mode === 'ai'}
             onChange={handleModeChange}
-            name="theme"
+            name="mode"
           />
         }
         label="AI mode"

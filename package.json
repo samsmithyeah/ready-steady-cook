@@ -49,7 +49,7 @@
     ]
   },
   "devDependencies": {
-    "cypress": "^6.6.0",
+    "cypress": "12.5.1",
     "eslint-plugin-cypress": "^2.11.2",
     "fontsource-roboto": "^4.0.0",
     "netlify-plugin-cypress": "^2.1.0",

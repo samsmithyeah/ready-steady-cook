@@ -4,10 +4,20 @@ import { useDispatch } from 'react-redux';
 import Generate from './components/ai/Generate';
 import Recipe from './components/ai/Recipe';
 import ChooseIngredients from './components/ai/Ingredients';
+import Progress from './components/common/Progress';
 import { clearIngredients, addCuisineType } from './redux/ai/inputSlice.js';
 
 export default function AiApp(props) {
-  const { classes, isLoading, setIsLoading, inputRef, history } = props;
+  const {
+    classes,
+    isLoading,
+    setIsLoading,
+    inputRef,
+    history,
+    activeStep,
+  } = props;
+  const steps = ['Choose ingredients', 'Choose cuisine type', 'Recipe'];
+
   const dispatch = useDispatch();
 
   function handleRestartClick() {
@@ -18,6 +28,7 @@ export default function AiApp(props) {
 
   return (
     <>
+      <Progress activeStep={activeStep} steps={steps} />
       <Switch>
         <Route exact path="/">
           {isLoading ? (

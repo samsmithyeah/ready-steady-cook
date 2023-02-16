@@ -8,10 +8,9 @@ import { CssBaseline, Paper } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
 import { useEffect, useState, useRef } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import Progress from './components/common/Progress.js';
-import ToolBar from './components/common/Toolbar/ToolBar.js';
 import AiApp from './AiApp.js';
 import LegacyApp from './LegacyApp.js';
+import ToolBar from './components/common/Toolbar/ToolBar.js';
 import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
@@ -102,7 +101,6 @@ export default function App() {
               handleThemeChange={handleThemeChange}
               themeType={themeType}
             />
-            <Progress activeStep={activeStep} />
             {mode === 'ai' ? (
               <AiApp
                 isLoading={isLoading}
@@ -110,6 +108,7 @@ export default function App() {
                 history={history}
                 inputRef={inputRef}
                 classes={classes}
+                activeStep={activeStep}
               />
             ) : (
               <LegacyApp
@@ -118,6 +117,7 @@ export default function App() {
                 history={history}
                 inputRef={inputRef}
                 classes={classes}
+                activeStep={activeStep}
               />
             )}
           </Paper>
