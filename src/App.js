@@ -68,7 +68,7 @@ export default function App() {
       case '/filters':
         searchTerm === '' && history.push('/');
         mode === 'ai' && history.push('/');
-        inputRef.current.focus();
+        mode === 'legacy' && inputRef.current.focus();
         setActiveStep(1);
         break;
       case '/results':
