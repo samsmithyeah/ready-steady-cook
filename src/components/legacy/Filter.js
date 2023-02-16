@@ -5,14 +5,17 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import FilterChips from './FilterChips.js';
+import FilterChips from '../common/FilterChips.js';
 import AddIcon from '@material-ui/icons/Add';
 import SendIcon from '@material-ui/icons/Send';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addFilter, deleteFilter } from '../redux/ingredientsSlice.js';
-import { filter } from '../redux/resultsSlice.js';
+import {
+  addFilter,
+  deleteFilter,
+} from '../../redux/legacy/ingredientsSlice.js';
+import { filter } from '../../redux/legacy/resultsSlice.js';
 
 export default function Filter(props) {
   const [newFilter, setNewFilter] = useState('');
@@ -93,7 +96,7 @@ export default function Filter(props) {
             <AddIcon />
           </IconButton>
         </form>
-        <FilterChips onDelete={handleDeleteFilter} />
+        <FilterChips onDelete={handleDeleteFilter} ingredients={filters} />
       </Box>
       <Button
         variant="contained"

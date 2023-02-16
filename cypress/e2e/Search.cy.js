@@ -4,6 +4,7 @@ describe('Primary ingredient search', () => {
       fixture: 'mock-response.json',
     });
     cy.visit('/');
+    cy.get('[name="mode"]').uncheck();
   });
 
   it('Displays title', () => {
@@ -11,12 +12,12 @@ describe('Primary ingredient search', () => {
   });
   it('Submit button enables and disables correctly', () => {
     cy.contains('Next').should('be.disabled');
-    cy.get('input').type('bananas');
+    cy.get('#search').type('bananas');
     cy.contains('Next').should('not.be.disabled');
   });
 
   it('Search returns results', () => {
-    cy.get('input').type('halloumi');
+    cy.get('#search').type('halloumi');
     cy.contains('Next').click();
     cy.contains('What would you like with your halloumi?');
     cy.get('button').contains('View 5 results');

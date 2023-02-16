@@ -1,13 +1,17 @@
-import { makeStyles } from '@material-ui/core/styles';
-import { Box, CircularProgress } from '@material-ui/core';
+import React from 'react';
+import {
+  makeStyles,
+  createTheme,
+  ThemeProvider,
+} from '@material-ui/core/styles';
+import { CssBaseline, Paper } from '@material-ui/core';
+import { grey } from '@material-ui/core/colors';
 import { useEffect, useState, useRef } from 'react';
-import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
-import Results from './components/Results.js';
-import Search from './components/Search.js';
-import Filter from './components/Filter.js';
-import Progress from './components/Progress.js';
-import { useSelector, useDispatch } from 'react-redux';
-import { addSearchTerm, clearFilters } from './redux/ingredientsSlice.js';
+import { useHistory, useLocation } from 'react-router-dom';
+import AiApp from './AiApp.js';
+import LegacyApp from './LegacyApp.js';
+import ToolBar from './components/common/Toolbar/ToolBar.js';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,16 +29,25 @@ const useStyles = makeStyles((theme) => ({
 
 export default function App() {
   const classes = useStyles();
-  // const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
+  const [themeType, setThemeType] = useState('dark');
+  const [mode, setMode] = useState('ai');
   const inputRef = useRef();
   const history = useHistory();
   const location = useLocation();
-
   const searchTerm = useSelector((state) => state.ingredients.searchTerm);
 
-  const dispatch = useDispatch();
+  const theme = createTheme({
+    palette: {
+      type: themeType,
+      background: {
+        paper: themeType === 'dark' ? '#303030' : grey[50],
+      },
+    },
+  });
+
+  const { ingredients } = useSelector((state) => state.input);
 
   useEffect(() => {
     switch (location.pathname) {
@@ -42,60 +55,74 @@ export default function App() {
         inputRef.current.focus();
         setActiveStep(0);
         break;
+      case '/cuisine':
+        ingredients === [] && history.push('/');
+        mode === 'legacy' && history.push('/');
+        setActiveStep(1);
+        break;
+      case '/recipe':
+        ingredients === [] && history.push('/');
+        mode === 'legacy' && history.push('/');
+        setActiveStep(3);
+        break;
       case '/filters':
         searchTerm === '' && history.push('/');
-        inputRef.current.focus();
+        mode === 'ai' && history.push('/');
+        mode === 'legacy' && inputRef.current.focus();
         setActiveStep(1);
         break;
       case '/results':
         searchTerm === '' && history.push('/');
+        mode === 'ai' && history.push('/');
         setActiveStep(3);
         break;
       default:
         history.push('/');
     }
-  }, [location, history, searchTerm]);
+  }, [location, history, ingredients, searchTerm, mode]);
 
-  function handleRestartClick() {
-    dispatch(addSearchTerm(''));
-    dispatch(clearFilters());
-    history.push('/');
+  function handleThemeChange(event) {
+    setThemeType(event.target.checked ? 'dark' : 'light');
+  }
+
+  function handleModeChange(event) {
+    setMode(event.target.checked ? 'ai' : 'legacy');
   }
 
   return (
     <>
-      <div className={classes.root}>
-        <Box>
-          <Progress activeStep={activeStep} />
-          <Switch>
-            <Route exact path="/">
-              {isLoading ? (
-                <CircularProgress />
-              ) : (
-                <Search
-                  history={history}
-                  inputRef={inputRef}
-                  setIsLoading={setIsLoading}
-                  classes={classes}
-                />
-              )}
-            </Route>
-            <Route exact path="/filters">
-              <Filter
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <div className={classes.root}>
+          <Paper elevation={0}>
+            <ToolBar
+              handleModeChange={handleModeChange}
+              mode={mode}
+              handleThemeChange={handleThemeChange}
+              themeType={themeType}
+            />
+            {mode === 'ai' ? (
+              <AiApp
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
                 history={history}
                 inputRef={inputRef}
-                handleRestartClick={handleRestartClick}
-              />
-            </Route>
-            <Route exact path="/results">
-              <Results
                 classes={classes}
-                handleRestartClick={handleRestartClick}
+                activeStep={activeStep}
               />
-            </Route>
-          </Switch>
-        </Box>
-      </div>
+            ) : (
+              <LegacyApp
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+                history={history}
+                inputRef={inputRef}
+                classes={classes}
+                activeStep={activeStep}
+              />
+            )}
+          </Paper>
+        </div>
+      </ThemeProvider>
     </>
   );
 }

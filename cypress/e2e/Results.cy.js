@@ -4,6 +4,7 @@ describe('View results', () => {
       fixture: 'mock-response.json',
     });
     cy.visit('/');
+    cy.get('[name="mode"]').uncheck();
   });
 
   it('Displays correct title for 1 ingredient', () => {
@@ -12,20 +13,20 @@ describe('View results', () => {
   });
 
   it('Displays correct title for 2 ingredients', () => {
-    cy.get('input').type('halloumi');
+    cy.get('#search').type('halloumi');
     cy.contains('Next').click();
-    cy.get('input').type('onion');
+    cy.get('#filter').type('onion');
     cy.get('#add-filter').click();
     cy.contains('View 1 result').click();
     cy.contains('h4', 'With your halloumi and onion you could make...');
   });
 
   it('Displays correct title for 3 ingredients', () => {
-    cy.get('input').type('halloumi');
+    cy.get('#search').type('halloumi');
     cy.contains('Next').click();
-    cy.get('input').type('onion');
+    cy.get('#filter').type('onion');
     cy.get('#add-filter').click();
-    cy.get('input').type('oil');
+    cy.get('#filter').type('oil');
     cy.get('#add-filter').click();
     cy.contains('View 1 result').click();
     cy.contains('h4', 'With your halloumi, onion and oil you could make...');
@@ -51,9 +52,9 @@ describe('View results', () => {
   });
 
   it('Displays filtered results', () => {
-    cy.get('input').type('halloumi');
+    cy.get('#search').type('halloumi');
     cy.contains('Next').click();
-    cy.get('input').type('onion');
+    cy.get('#filter').type('onion');
     cy.get('#add-filter').click();
     cy.contains('View 1 result').click();
     cy.contains('h6', '1 result');

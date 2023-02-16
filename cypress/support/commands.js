@@ -25,7 +25,7 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 Cypress.Commands.add('getResults', (searchTerm) => {
-  cy.get('input').type(searchTerm);
+  cy.get('#search').type(searchTerm);
   cy.contains('Next').click();
   cy.contains('View 5 results').click();
 });
