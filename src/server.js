@@ -54,8 +54,6 @@ The recipe is as follows:`;
     temperature: 0,
   });
   const recipe = response.data.choices[0].text;
-
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.send({ recipe });
 });
 
