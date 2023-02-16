@@ -20,6 +20,7 @@ export default function Generate(props) {
   const { ingredients, cuisineType } = useSelector((state) => state.input);
   const [customType, setCustomType] = useState(false);
   const inputEl = useRef(null);
+  const { REACT_APP_SERVER_URL } = process.env;
 
   useEffect(() => {
     if (customType) {
@@ -32,7 +33,7 @@ export default function Generate(props) {
   async function handleGenerateRecipe(event) {
     event.preventDefault();
     setIsLoading(true);
-    const response = await fetch('http://localhost:3001/generate-recipe', {
+    const response = await fetch(REACT_APP_SERVER_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
