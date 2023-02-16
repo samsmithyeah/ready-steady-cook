@@ -6,7 +6,7 @@ This is a project to help me learn React and coding in general. It's currently d
 
 ## AI mode
 
-This uses the OpenAI GPT-3 completetion API to generate recipes based on the user's ingredients.
+This uses the OpenAI GPT-3 completion API to generate recipes based on the user's ingredients.
 
 To get started, run `yarn install` then...
 
