@@ -1,21 +1,8 @@
-const express = require('express');
-const bodyParser = require('body-parser');
 const { Configuration, OpenAIApi } = require('openai');
-const cors = require('cors');
-
-const app = express();
-app.use(bodyParser.json());
-
-const corsOptions = {
-  origin: 'http://localhost:3000',
-  credentials: true,
-  optionSuccessStatus: 200,
-};
-app.use(cors(corsOptions));
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
-app.post('/generate-recipe', async (req, res) => {
+export default async function handler(req, res) {
   const { ingredients, cuisineType } = req.body;
 
   const basePrompt = `Generate a recipe containing the following ingredients: ${ingredients.join(
@@ -55,8 +42,4 @@ The recipe is as follows:`;
   });
   const recipe = response.data.choices[0].text;
   res.send({ recipe });
-});
-
-app.listen(3001, () => {
-  console.log('Server is listening on port 3001');
-});
+}
