@@ -33,17 +33,22 @@ export default function Generate(props) {
   async function handleGenerateRecipe(event) {
     event.preventDefault();
     setIsLoading(true);
-    const response = await fetch(REACT_APP_SERVER_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ ingredients, cuisineType }),
-    });
-    const { recipe } = await response.json();
-    dispatch(generate(recipe));
-    setIsLoading(false);
-    history.push('/recipe');
+    try {
+      const response = await fetch(REACT_APP_SERVER_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ingredients, cuisineType }),
+      });
+      const { recipe } = await response.json();
+      dispatch(generate(recipe));
+      setIsLoading(false);
+      history.push('/recipe');
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+    }
   }
 
   function handleCustomToggle(event) {
