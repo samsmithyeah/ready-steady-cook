@@ -35,7 +35,7 @@ The recipe is as follows:`;
   });
   const openai = new OpenAIApi(configuration);
   const response = await openai.createCompletion({
-    model: 'text-davinci-003',
+    model: 'text-davinci-002',
     prompt,
     max_tokens: 1000,
     temperature: 0,
