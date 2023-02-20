@@ -1,4 +1,4 @@
-import { Button, TextField, Typography } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import TypingTitle from '../common/TypingTitle.js';
 import { useSelector, useDispatch } from 'react-redux';
