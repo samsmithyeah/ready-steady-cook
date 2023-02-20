@@ -37,6 +37,11 @@ export default function App() {
   const history = useHistory();
   const location = useLocation();
   const searchTerm = useSelector((state) => state.ingredients.searchTerm);
+  const aiIngredients = useSelector((state) => state.input.ingredients);
+  const legacyIngredients = useSelector(
+    (state) => state.ingredients.ingredients,
+  );
+  const { recipe } = useSelector((state) => state.recipe);
 
   const theme = createTheme({
     palette: {
@@ -45,9 +50,10 @@ export default function App() {
         paper: themeType === 'dark' ? '#303030' : grey[50],
       },
     },
+    typography: {
+      fontFamily: 'Manrope, sans-serif',
+    },
   });
-
-  const { ingredients } = useSelector((state) => state.input);
 
   useEffect(() => {
     switch (location.pathname) {
@@ -56,30 +62,39 @@ export default function App() {
         setActiveStep(0);
         break;
       case '/cuisine':
-        ingredients === [] && history.push('/');
+        !aiIngredients && history.push('/');
         mode === 'legacy' && history.push('/');
         setActiveStep(1);
         break;
       case '/recipe':
-        ingredients === [] && history.push('/');
+        !aiIngredients && history.push('/');
+        !recipe && history.push('/');
         mode === 'legacy' && history.push('/');
         setActiveStep(3);
         break;
       case '/filters':
-        searchTerm === '' && history.push('/');
+        !searchTerm && history.push('/');
         mode === 'ai' && history.push('/');
         mode === 'legacy' && inputRef.current.focus();
         setActiveStep(1);
         break;
       case '/results':
-        searchTerm === '' && history.push('/');
+        !searchTerm && history.push('/');
         mode === 'ai' && history.push('/');
         setActiveStep(3);
         break;
       default:
         history.push('/');
     }
-  }, [location, history, ingredients, searchTerm, mode]);
+  }, [
+    location,
+    history,
+    aiIngredients,
+    legacyIngredients,
+    searchTerm,
+    mode,
+    recipe,
+  ]);
 
   function handleThemeChange(event) {
     setThemeType(event.target.checked ? 'dark' : 'light');

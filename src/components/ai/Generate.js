@@ -12,7 +12,7 @@ import SendIcon from '@material-ui/icons/Send';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useRef, useEffect } from 'react';
-import { generate } from '../../redux/ai/recipeSlice.js';
+import { generate, generateImage } from '../../redux/ai/recipeSlice.js';
 import { addCuisineType } from '../../redux/ai/inputSlice.js';
 
 export default function Generate(props) {
@@ -20,7 +20,7 @@ export default function Generate(props) {
   const { ingredients, cuisineType } = useSelector((state) => state.input);
   const [customType, setCustomType] = useState(false);
   const inputEl = useRef(null);
-  const { REACT_APP_SERVER_URL } = process.env;
+  const { REACT_APP_RECIPE_URL, REACT_APP_IMAGE_URL } = process.env;
 
   useEffect(() => {
     if (customType) {
@@ -34,7 +34,7 @@ export default function Generate(props) {
     event.preventDefault();
     setIsLoading(true);
     try {
-      const response = await fetch(REACT_APP_SERVER_URL, {
+      const response = await fetch(REACT_APP_RECIPE_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,11 +43,29 @@ export default function Generate(props) {
       });
       const { recipe } = await response.json();
       dispatch(generate(recipe));
+      const recipeJSON = JSON.parse(recipe);
       setIsLoading(false);
       history.push('/recipe');
+      await handleGenerateImage(recipeJSON.title);
     } catch (error) {
       console.error(error);
       setIsLoading(false);
+    }
+  }
+
+  async function handleGenerateImage(recipeTitle) {
+    try {
+      const response = await fetch(REACT_APP_IMAGE_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ recipeTitle }),
+      });
+      const { imageURL } = await response.json();
+      dispatch(generateImage(imageURL));
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -87,11 +105,13 @@ export default function Generate(props) {
                 value="default"
                 control={<Radio />}
                 label="I don't care"
+                checked={!customType}
               />
               <FormControlLabel
                 value="custom"
                 control={<Radio />}
                 label="This please:"
+                checked={customType}
               />
               <FormControlLabel
                 disabled={!customType}
@@ -100,6 +120,7 @@ export default function Generate(props) {
                     inputProps={{ 'aria-label': 'cuisine-type' }}
                     onChange={handleSetCuisineType}
                     inputRef={inputEl}
+                    onClick={() => setCustomType(true)}
                   />
                 }
               />

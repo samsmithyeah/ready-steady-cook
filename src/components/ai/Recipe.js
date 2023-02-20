@@ -1,21 +1,18 @@
-import { Button, Grid } from '@material-ui/core';
+import { Button, Grid, CircularProgress } from '@material-ui/core';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import { useSelector } from 'react-redux';
 
 export default function Recipe(props) {
   const { handleRestartClick, classes } = props;
 
-  const { recipe } = useSelector((state) => state.recipe);
+  const { recipe, imgURL } = useSelector((state) => state.recipe);
   const recipeJSON = JSON.parse(recipe);
-  console.log(recipeJSON);
 
   return (
     <div className={classes.root}>
-      <Grid container style={{ textAlign: 'left' }}>
-        <Grid item>
+      <Grid container style={{ textAlign: 'left', alignItems: 'flex-start' }}>
+        <Grid item xs={6}>
           <h1>{recipeJSON.title}</h1>
-        </Grid>
-        <Grid item xs={12}>
           <p>
             <strong>Prep Time:</strong> {recipeJSON.prepTime}
             <br />
@@ -25,9 +22,14 @@ export default function Recipe(props) {
             <br />
             <strong>Servings:</strong> {recipeJSON.servings}
           </p>
-        </Grid>
-        <Grid item>
           <p>{recipeJSON.description}</p>
+        </Grid>
+        <Grid item xs={6} style={{ display: 'flex', justifyContent: 'center' }}>
+          {!imgURL ? (
+            <CircularProgress />
+          ) : (
+            <img src={imgURL} alt="The recipe" />
+          )}
         </Grid>
         <Grid item xs={12}>
           <h2>Ingredients</h2>
@@ -37,7 +39,7 @@ export default function Recipe(props) {
             })}
           </ul>
         </Grid>
-        <Grid item>
+        <Grid item xs={12}>
           <h2>Method</h2>
           <ol>
             {recipeJSON.method.map((step) => {
