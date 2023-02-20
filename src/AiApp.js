@@ -6,6 +6,7 @@ import Recipe from './components/ai/Recipe';
 import ChooseIngredients from './components/ai/Ingredients';
 import Progress from './components/common/Progress';
 import { clearIngredients, addCuisineType } from './redux/ai/inputSlice.js';
+import { generate, generateImage } from './redux/ai/recipeSlice';
 
 export default function AiApp(props) {
   const {
@@ -23,6 +24,8 @@ export default function AiApp(props) {
   function handleRestartClick() {
     dispatch(addCuisineType(''));
     dispatch(clearIngredients());
+    dispatch(generate({}));
+    dispatch(generateImage(''));
     history.push('/');
   }
 

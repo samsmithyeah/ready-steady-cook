@@ -1,11 +1,6 @@
-import {
-  Button,
-  TextField,
-  Typography,
-  IconButton,
-  Box,
-} from '@material-ui/core';
+import { Button, TextField, IconButton, Box } from '@material-ui/core';
 import FilterChips from '../common/FilterChips.js';
+import TypingTitle from '../common/TypingTitle.js';
 import SendIcon from '@material-ui/icons/Send';
 import AddIcon from '@material-ui/icons/Add';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
@@ -16,16 +11,12 @@ import { useState } from 'react';
 export default function ChooseIngredients(props) {
   const { history, inputRef, setIsLoading, handleRestartClick } = props;
   const [newIngredient, setNewIngredient] = useState('');
-
   const { ingredients } = useSelector((state) => state.input);
-
   const dispatch = useDispatch();
 
   function handleAddIngredient(event) {
     event.preventDefault();
-
     dispatch(addIngredient(newIngredient.trim()));
-
     setNewIngredient('');
   }
 
@@ -41,9 +32,7 @@ export default function ChooseIngredients(props) {
 
   return (
     <>
-      <Typography variant="h4" gutterBottom>
-        What's in your fridge?
-      </Typography>
+      <TypingTitle text="What's in your fridge?" />
       <Box height={220}>
         <form noValidate autoComplete="off" onSubmit={handleAddIngredient}>
           <TextField

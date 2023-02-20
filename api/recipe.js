@@ -1,13 +1,10 @@
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-
 export const config = {
   runtime: 'edge', // this is a pre-requisite
   regions: ['iad1'], // only execute this function on iad1
 };
 
-export default async function handler(req, res) {
+export default async function recipe(req) {
   const reqJson = await req.json();
-  console.log(reqJson);
   const { ingredients, cuisineType } = reqJson;
 
   const basePrompt = `Generate a recipe containing the following ingredients: ${ingredients.join(

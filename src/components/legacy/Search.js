@@ -1,5 +1,6 @@
-import { Button, TextField, Typography } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
+import TypingTitle from '../common/TypingTitle.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { search } from '../../redux/legacy/resultsSlice.js';
 import { addSearchTerm } from '../../redux/legacy/ingredientsSlice.js';
@@ -38,9 +39,7 @@ export default function Search(props) {
   return (
     <>
       <div>
-        <Typography variant="h4" gutterBottom>
-          What's in your fridge?
-        </Typography>
+        <TypingTitle text="What's in your fridge?" />
       </div>
       <div>
         <form
