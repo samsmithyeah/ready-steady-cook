@@ -1,4 +1,4 @@
-import { Button, Grid, ListItem, ListItemText, List } from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import { useSelector } from 'react-redux';
 
