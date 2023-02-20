@@ -2,7 +2,7 @@ import {
   Button,
   TextField,
   Typography,
-  Box,
+  Grid,
   RadioGroup,
   Radio,
   FormControl,
@@ -84,50 +84,55 @@ export default function Generate(props) {
 
   return (
     <>
-      <form
-        noValidate
-        className={classes.root}
-        autoComplete="off"
-        onSubmit={handleGenerateRecipe}
+      <Grid
+        container
+        style={{
+          height: '80vh',
+          justifyContent: 'center',
+        }}
       >
-        <Typography variant="h4" gutterBottom>
-          What sort of thing do you fancy?
-        </Typography>
-        <Box height={200}>
-          <FormControl component="fieldset">
-            <RadioGroup
-              aria-label="select cuisine type"
-              name="cuisineType"
-              onChange={handleCustomToggle}
-              defaultValue="default"
-            >
-              <FormControlLabel
-                value="default"
-                control={<Radio />}
-                label="I don't care"
-                checked={!customType}
-              />
-              <FormControlLabel
-                value="custom"
-                control={<Radio />}
-                label="This please:"
-                checked={customType}
-              />
-              <FormControlLabel
-                disabled={!customType}
-                control={
-                  <TextField
-                    inputProps={{ 'aria-label': 'cuisine-type' }}
-                    onChange={handleSetCuisineType}
-                    inputRef={inputEl}
-                    onClick={() => setCustomType(true)}
-                  />
-                }
-              />
-            </RadioGroup>
-          </FormControl>
-        </Box>
-        <Box height={200}>
+        <Grid item xs={12}>
+          <Typography variant="h4" gutterBottom>
+            What sort of thing do you fancy?
+          </Typography>
+        </Grid>
+        <form noValidate autoComplete="off" onSubmit={handleGenerateRecipe}>
+          <Grid item xs={12}>
+            <FormControl component="fieldset">
+              <RadioGroup
+                aria-label="select cuisine type"
+                name="cuisineType"
+                onChange={handleCustomToggle}
+                defaultValue="default"
+              >
+                <FormControlLabel
+                  value="default"
+                  control={<Radio />}
+                  label="I don't care"
+                  checked={!customType}
+                />
+                <FormControlLabel
+                  value="custom"
+                  control={<Radio />}
+                  label="This please:"
+                  checked={customType}
+                />
+                <FormControlLabel
+                  disabled={!customType}
+                  control={
+                    <TextField
+                      inputProps={{ 'aria-label': 'cuisine-type' }}
+                      onChange={handleSetCuisineType}
+                      inputRef={inputEl}
+                      onClick={() => setCustomType(true)}
+                    />
+                  }
+                />
+              </RadioGroup>
+            </FormControl>
+          </Grid>
+        </form>
+        <Grid item xs={12}>
           <Button
             variant="contained"
             type="submit"
@@ -138,11 +143,25 @@ export default function Generate(props) {
           >
             Generate a recipe
           </Button>
-        </Box>
-      </form>
-      <Button onClick={handleRestartClick} endIcon={<AutorenewIcon />}>
-        Start again
-      </Button>
+        </Grid>
+
+        <Grid
+          item
+          xs={12}
+          style={{ display: 'flex', justifyContent: 'center' }}
+        >
+          <Button
+            onClick={handleRestartClick}
+            endIcon={<AutorenewIcon />}
+            style={{
+              position: 'absolute',
+              bottom: 5,
+            }}
+          >
+            Start again
+          </Button>
+        </Grid>
+      </Grid>
     </>
   );
 }
