@@ -16,7 +16,7 @@ import { generate, generateImage } from '../../redux/ai/recipeSlice.js';
 import { addCuisineType } from '../../redux/ai/inputSlice.js';
 
 export default function Generate(props) {
-  const { history, setIsLoading, classes, handleRestartClick } = props;
+  const { history, setIsLoading, handleRestartClick } = props;
   const { ingredients, cuisineType } = useSelector((state) => state.input);
   const [customType, setCustomType] = useState(false);
   const inputEl = useRef(null);
