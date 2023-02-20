@@ -1,4 +1,4 @@
-import { Button, TextField, IconButton, Box } from '@material-ui/core';
+import { Button, TextField, IconButton, Grid } from '@material-ui/core';
 import FilterChips from '../common/FilterChips.js';
 import TypingTitle from '../common/TypingTitle.js';
 import SendIcon from '@material-ui/icons/Send';
@@ -32,45 +32,62 @@ export default function ChooseIngredients(props) {
 
   return (
     <>
-      <TypingTitle text="What's in your fridge?" />
-      <Box height={220}>
-        <form noValidate autoComplete="off" onSubmit={handleAddIngredient}>
-          <TextField
-            inputRef={inputRef}
-            id="ingredient"
-            onChange={(e) => setNewIngredient(e.target.value)}
-            value={newIngredient}
+      <Grid container style={{ height: '80vh' }}>
+        <Grid item xs={12}>
+          <TypingTitle text="What's in your fridge?" />
+        </Grid>
+        <Grid item xs={12}>
+          <form noValidate autoComplete="off" onSubmit={handleAddIngredient}>
+            <TextField
+              inputRef={inputRef}
+              id="ingredient"
+              onChange={(e) => setNewIngredient(e.target.value)}
+              value={newIngredient}
+            />
+            <IconButton
+              disabled={newIngredient.trim().length === 0}
+              variant="contained"
+              color="primary"
+              type="submit"
+              id="add-ingredient"
+            >
+              <AddIcon />
+            </IconButton>
+          </form>
+          <FilterChips
+            onDelete={handleDeleteIngredient}
+            ingredients={ingredients}
           />
-          <IconButton
-            disabled={newIngredient.trim().length === 0}
+        </Grid>
+        <Grid item xs={12}>
+          <Button
             variant="contained"
             color="primary"
-            type="submit"
-            id="add-ingredient"
+            onClick={handleGoToNextPage}
+            endIcon={<SendIcon />}
+            disabled={ingredients.length === 0}
+            disableElevation
           >
-            <AddIcon />
-          </IconButton>
-        </form>
-        <FilterChips
-          onDelete={handleDeleteIngredient}
-          ingredients={ingredients}
-        />
-      </Box>
-      <Box height={210}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleGoToNextPage}
-          endIcon={<SendIcon />}
-          disabled={ingredients.length === 0}
-          disableElevation
+            Next
+          </Button>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          style={{ display: 'flex', justifyContent: 'center' }}
         >
-          Next
-        </Button>
-      </Box>
-      <Button onClick={handleRestartClick} endIcon={<AutorenewIcon />}>
-        Start again
-      </Button>
+          <Button
+            onClick={handleRestartClick}
+            endIcon={<AutorenewIcon />}
+            style={{
+              position: 'absolute',
+              bottom: 5,
+            }}
+          >
+            Start again
+          </Button>
+        </Grid>
+      </Grid>
     </>
   );
 }

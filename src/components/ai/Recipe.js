@@ -11,7 +11,7 @@ export default function Recipe(props) {
   return (
     <div className={classes.root}>
       <Grid container style={{ textAlign: 'left', alignItems: 'flex-start' }}>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <h1>{recipeJSON.title}</h1>
           <p>
             <strong>Prep Time:</strong> {recipeJSON.prepTime}
@@ -24,14 +24,19 @@ export default function Recipe(props) {
           </p>
           <p>{recipeJSON.description}</p>
         </Grid>
-        <Grid item xs={6} style={{ display: 'flex', justifyContent: 'center' }}>
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          style={{ display: 'flex', justifyContent: 'center' }}
+        >
           {!imgURL ? (
             <CircularProgress />
           ) : (
             <img src={imgURL} alt="The recipe" />
           )}
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6}>
           <h2>Ingredients</h2>
           <ul>
             {recipeJSON.ingredients.map((ingredient) => {
