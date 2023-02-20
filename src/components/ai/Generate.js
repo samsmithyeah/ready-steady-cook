@@ -1,7 +1,6 @@
 import {
   Button,
   TextField,
-  Typography,
   Grid,
   RadioGroup,
   Radio,
@@ -10,6 +9,7 @@ import {
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
+import TypingTitle from '../common/TypingTitle.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useRef, useEffect } from 'react';
 import { generate, generateImage } from '../../redux/ai/recipeSlice.js';
@@ -84,19 +84,17 @@ export default function Generate(props) {
 
   return (
     <>
-      <Grid
-        container
-        style={{
-          height: '80vh',
-          justifyContent: 'center',
-        }}
-      >
-        <Grid item xs={12}>
-          <Typography variant="h4" gutterBottom>
-            What sort of thing do you fancy?
-          </Typography>
-        </Grid>
-        <form noValidate autoComplete="off" onSubmit={handleGenerateRecipe}>
+      <form noValidate autoComplete="off" onSubmit={handleGenerateRecipe}>
+        <Grid
+          container
+          style={{
+            height: '80vh',
+            justifyContent: 'center',
+          }}
+        >
+          <Grid item xs={12}>
+            <TypingTitle text="What sort of thing do you fancy?" />
+          </Grid>
           <Grid item xs={12}>
             <FormControl component="fieldset">
               <RadioGroup
@@ -131,37 +129,36 @@ export default function Generate(props) {
               </RadioGroup>
             </FormControl>
           </Grid>
-        </form>
-        <Grid item xs={12}>
-          <Button
-            variant="contained"
-            type="submit"
-            color="primary"
-            endIcon={<SendIcon />}
-            disabled={customType && !cuisineType}
-            disableElevation
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              type="submit"
+              color="primary"
+              endIcon={<SendIcon />}
+              disabled={customType && !cuisineType}
+              disableElevation
+            >
+              Generate a recipe
+            </Button>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            style={{ display: 'flex', justifyContent: 'center' }}
           >
-            Generate a recipe
-          </Button>
+            <Button
+              onClick={handleRestartClick}
+              endIcon={<AutorenewIcon />}
+              style={{
+                position: 'absolute',
+                bottom: 5,
+              }}
+            >
+              Start again
+            </Button>
+          </Grid>
         </Grid>
-
-        <Grid
-          item
-          xs={12}
-          style={{ display: 'flex', justifyContent: 'center' }}
-        >
-          <Button
-            onClick={handleRestartClick}
-            endIcon={<AutorenewIcon />}
-            style={{
-              position: 'absolute',
-              bottom: 5,
-            }}
-          >
-            Start again
-          </Button>
-        </Grid>
-      </Grid>
+      </form>
     </>
   );
 }

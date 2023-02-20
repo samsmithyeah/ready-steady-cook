@@ -1,12 +1,19 @@
-import { Button, TextField } from '@material-ui/core';
+import { Button, TextField, Grid } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
+import AutorenewIcon from '@material-ui/icons/Autorenew';
 import TypingTitle from '../common/TypingTitle.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { search } from '../../redux/legacy/resultsSlice.js';
 import { addSearchTerm } from '../../redux/legacy/ingredientsSlice.js';
 
 export default function Search(props) {
-  const { history, inputRef, setIsLoading, classes } = props;
+  const {
+    history,
+    inputRef,
+    setIsLoading,
+    classes,
+    handleRestartClick,
+  } = props;
 
   const { REACT_APP_APP_ID, REACT_APP_APP_KEY } = process.env;
 
@@ -38,35 +45,54 @@ export default function Search(props) {
 
   return (
     <>
-      <div>
-        <TypingTitle text="What's in your fridge?" />
-      </div>
-      <div>
-        <form
-          noValidate
-          className={classes.root}
-          autoComplete="off"
-          onSubmit={handleSearch}
-        >
-          <TextField
-            inputRef={inputRef}
-            id="search"
-            inputProps={{ 'aria-label': 'search' }}
-            onChange={handleSetSearchTerm}
-          />
-          <br />
-          <Button
-            size="large"
-            disabled={searchTerm.length === 0}
-            variant="contained"
-            color="primary"
-            type="submit"
-            endIcon={<SendIcon />}
+      <form
+        noValidate
+        className={classes.root}
+        autoComplete="off"
+        onSubmit={handleSearch}
+      >
+        <Grid container style={{ height: '80vh' }}>
+          <Grid item xs={12}>
+            <TypingTitle text="What's in your fridge?" />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              inputRef={inputRef}
+              id="search"
+              inputProps={{ 'aria-label': 'search' }}
+              onChange={handleSetSearchTerm}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              size="large"
+              disabled={searchTerm.length === 0}
+              variant="contained"
+              color="primary"
+              type="submit"
+              endIcon={<SendIcon />}
+            >
+              Next
+            </Button>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            style={{ display: 'flex', justifyContent: 'center' }}
           >
-            Next
-          </Button>
-        </form>
-      </div>
+            <Button
+              onClick={handleRestartClick}
+              endIcon={<AutorenewIcon />}
+              style={{
+                position: 'absolute',
+                bottom: 5,
+              }}
+            >
+              Start again
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
     </>
   );
 }

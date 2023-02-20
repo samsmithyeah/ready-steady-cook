@@ -1,11 +1,6 @@
-import {
-  Box,
-  Button,
-  IconButton,
-  TextField,
-  Typography,
-} from '@material-ui/core';
+import { Button, IconButton, TextField, Grid } from '@material-ui/core';
 import FilterChips from '../common/FilterChips.js';
+import TypingTitle from '../common/TypingTitle.js';
 import AddIcon from '@material-ui/icons/Add';
 import SendIcon from '@material-ui/icons/Send';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
@@ -75,43 +70,54 @@ export default function Filter(props) {
 
   return (
     <>
-      <Typography variant="h4" gutterBottom>
-        What would you like with your {searchTerm.toLowerCase()}?
-      </Typography>
-      <Box height={100}>
-        <form noValidate autoComplete="off" onSubmit={handleAddFilter}>
-          <TextField
-            inputRef={inputRef}
-            id="filter"
-            value={newFilter}
-            onChange={(e) => setNewFilter(e.target.value)}
+      <Grid container style={{ height: '80vh' }}>
+        <Grid item xs={12}>
+          <TypingTitle
+            text={`What would you like with your ${searchTerm.toLowerCase()}?`}
           />
-          <IconButton
-            disabled={newFilter.length === 0}
+        </Grid>
+        <Grid item xs={12}>
+          <form noValidate autoComplete="off" onSubmit={handleAddFilter}>
+            <TextField
+              inputRef={inputRef}
+              id="filter"
+              value={newFilter}
+              onChange={(e) => setNewFilter(e.target.value)}
+            />
+            <IconButton
+              disabled={newFilter.length === 0}
+              variant="contained"
+              color="primary"
+              type="submit"
+              id="add-filter"
+            >
+              <AddIcon />
+            </IconButton>
+          </form>
+          <FilterChips onDelete={handleDeleteFilter} ingredients={filters} />
+        </Grid>
+        <Grid item xs={12}>
+          <Button
             variant="contained"
             color="primary"
-            type="submit"
-            id="add-filter"
+            onClick={handleFilterResults}
+            endIcon={<SendIcon />}
+            disabled={filteredResults.length === 0}
+            disableElevation
           >
-            <AddIcon />
-          </IconButton>
-        </form>
-        <FilterChips onDelete={handleDeleteFilter} ingredients={filters} />
-      </Box>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleFilterResults}
-        endIcon={<SendIcon />}
-        disabled={filteredResults.length === 0}
-        disableElevation
-      >
-        {viewResultsButtonText()}
-      </Button>
-      <br />
-      <Button onClick={handleRestartClick} endIcon={<AutorenewIcon />}>
-        Start again
-      </Button>
+            {viewResultsButtonText()}
+          </Button>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          style={{ display: 'flex', justifyContent: 'center' }}
+        >
+          <Button onClick={handleRestartClick} endIcon={<AutorenewIcon />}>
+            Start again
+          </Button>
+        </Grid>
+      </Grid>
     </>
   );
 }

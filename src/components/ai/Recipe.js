@@ -1,4 +1,5 @@
 import { Button, Grid, CircularProgress } from '@material-ui/core';
+import TypingTitle from '../common/TypingTitle';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import { useSelector } from 'react-redux';
 
@@ -6,11 +7,27 @@ export default function Recipe(props) {
   const { handleRestartClick, classes } = props;
 
   const { recipe, imgURL } = useSelector((state) => state.recipe);
+  const { ingredients } = useSelector((state) => state.input);
   const recipeJSON = JSON.parse(recipe);
+  console.log(ingredients);
+
+  function resultsHeading() {
+    if (ingredients.length === 1) {
+      return `With your ${ingredients[0].toLowerCase()} you could make...`;
+    } else {
+      return `With your ${ingredients[0].toLowerCase()}, ${ingredients
+        .slice(1, -1)
+        .join(', ')} and ${ingredients.slice(-1)} you could make...`;
+    }
+  }
 
   return (
     <div className={classes.root}>
       <Grid container style={{ textAlign: 'left', alignItems: 'flex-start' }}>
+        <Grid item xs={12}>
+          <TypingTitle text={resultsHeading()} />
+          <br />
+        </Grid>
         <Grid item xs={12} sm={6}>
           <h1>{recipeJSON.title}</h1>
           <p>
