@@ -7,13 +7,7 @@ import { search } from '../../redux/legacy/resultsSlice.js';
 import { addSearchTerm } from '../../redux/legacy/ingredientsSlice.js';
 
 export default function Search(props) {
-  const {
-    history,
-    inputRef,
-    setIsLoading,
-    classes,
-    handleRestartClick,
-  } = props;
+  const { history, inputRef, setIsLoading, handleRestartClick } = props;
 
   const { REACT_APP_APP_ID, REACT_APP_APP_KEY } = process.env;
 
@@ -45,16 +39,18 @@ export default function Search(props) {
 
   return (
     <>
-      <form
-        noValidate
-        className={classes.root}
-        autoComplete="off"
-        onSubmit={handleSearch}
-      >
-        <Grid container style={{ height: '80vh' }}>
+      <form noValidate autoComplete="off" onSubmit={handleSearch}>
+        <Grid
+          container
+          style={{
+            height: '80vh',
+            justifyContent: 'center',
+          }}
+        >
           <Grid item xs={12}>
             <TypingTitle text="What's in your fridge?" />
           </Grid>
+
           <Grid item xs={12}>
             <TextField
               inputRef={inputRef}
@@ -75,6 +71,7 @@ export default function Search(props) {
               Next
             </Button>
           </Grid>
+
           <Grid
             item
             xs={12}

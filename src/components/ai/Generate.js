@@ -16,7 +16,7 @@ import { generate, generateImage } from '../../redux/ai/recipeSlice.js';
 import { addCuisineType } from '../../redux/ai/inputSlice.js';
 
 export default function Generate(props) {
-  const { history, setIsLoading, handleRestartClick } = props;
+  const { history, handleRestartClick } = props;
   const { ingredients, cuisineType } = useSelector((state) => state.input);
   const [customType, setCustomType] = useState(false);
   const inputEl = useRef(null);
@@ -33,7 +33,6 @@ export default function Generate(props) {
   async function handleGenerateRecipe(event) {
     event.preventDefault();
     history.push('/recipe');
-    setIsLoading(true);
     try {
       const response = await fetch(REACT_APP_RECIPE_URL, {
         method: 'POST',
@@ -45,12 +44,9 @@ export default function Generate(props) {
       const { recipe } = await response.json();
       dispatch(generate(recipe));
       const recipeJSON = JSON.parse(recipe);
-      setIsLoading(false);
-      console.log('still here');
       await handleGenerateImage(recipeJSON.title);
     } catch (error) {
       console.error(error);
-      setIsLoading(false);
     }
   }
 
