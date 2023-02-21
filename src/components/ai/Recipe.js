@@ -41,7 +41,7 @@ export default function Recipe(props) {
           alignItems: 'flex-start',
         }}
       >
-        <Grid item xs={12}>
+        <Grid item xs={12} style={{ textAlign: 'center' }}>
           <TypingTitle text={resultsHeading()} />
           <br />
         </Grid>
