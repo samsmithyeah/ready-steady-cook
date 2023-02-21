@@ -1,5 +1,6 @@
 import { Button, Typography } from '@material-ui/core';
 import ResultsList from './ResultsList.js';
+import TypingTitle from '../common/TypingTitle.js';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import { useSelector } from 'react-redux';
 
@@ -26,9 +27,7 @@ export default function Results(props) {
 
   return (
     <div className={classes.root}>
-      <Typography variant="h4" gutterBottom>
-        {resultsHeading()}{' '}
-      </Typography>
+      <TypingTitle text={resultsHeading()} />
       {filteredResults.length > 0 && (
         <Typography variant="subtitle2" gutterBottom>
           {filteredResults.length} results

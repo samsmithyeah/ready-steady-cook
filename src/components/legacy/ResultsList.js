@@ -23,8 +23,13 @@ export default function ResultsList(props) {
       <List>
         {results.map((result) => {
           return (
-            <Link href={result.recipe.url} target="_blank" rel="noreferrer">
-              <ListItem key={result.recipe.url}>
+            <Link
+              href={result.recipe.url}
+              key={result.recipe.url}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <ListItem>
                 <ListItemAvatar>
                   <Avatar
                     alt={result.recipe.label}
