@@ -41,6 +41,7 @@ export default function LegacyApp(props) {
               inputRef={inputRef}
               setIsLoading={setIsLoading}
               classes={classes}
+              handleRestartClick={handleRestartClick}
             />
           )}
         </Route>

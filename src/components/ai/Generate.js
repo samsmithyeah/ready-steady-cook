@@ -32,6 +32,7 @@ export default function Generate(props) {
 
   async function handleGenerateRecipe(event) {
     event.preventDefault();
+    history.push('/recipe');
     setIsLoading(true);
     try {
       const response = await fetch(REACT_APP_RECIPE_URL, {
@@ -45,7 +46,7 @@ export default function Generate(props) {
       dispatch(generate(recipe));
       const recipeJSON = JSON.parse(recipe);
       setIsLoading(false);
-      history.push('/recipe');
+      console.log('still here');
       await handleGenerateImage(recipeJSON.title);
     } catch (error) {
       console.error(error);
