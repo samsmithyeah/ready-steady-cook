@@ -2,36 +2,27 @@
 
 ### Find recipes based on ingredients in your fridge
 
-This is a project to help me learn React and coding in general. It's currently deployed to https://ready-steady-cook.netlify.app/.
+This is a project to help me learn React and coding in general. It uses the OpenAI GPT-3 completion API to generate recipes based on the user's ingredients. It's currently deployed to https://ready-steady-cook.vercel.app/.
 
-## AI mode
+## Prerequisites
 
-This uses the OpenAI GPT-3 completion API to generate recipes based on the user's ingredients.
+- Install Vercel CLI (instructions here: https://vercel.com/docs/cli or just run `yarn global add vercel`
+- To use the 'ai' part of the app, you'll need an OpenAI API key. You can get this by signing up here: https://beta.openai.com/signup
+- To use the 'legacy' part of the app, you'll need an Edamam recipe API app ID and key. You can get these by signing up here: https://developer.edamam.com/edamam-recipe-api
 
-To get started, run `yarn install` then...
+## Get started
 
-#### To start the server
+1. Clone this repo
+2. Create a `.env` file in the project root containing the following:
 
-Run `yarn start-server` (you'll need to have an OpenAI API key set)
+```
+REACT_APP_APP_ID=<your Edamam app ID here>
+REACT_APP_APP_KEY=<your Edamam key here>
+OPENAI_API_KEY=<your OpenAI key here>
+REACT_APP_RECIPE_URL='http://localhost:3000/api/recipe'
+REACT_APP_IMAGE_URL='http://localhost:3000/api/image'
+```
 
-#### To run in development mode
+3. Run the app with `vercel dev`
 
-Run `yarn start`
-
-#### To run in production mode
-
-Run `yarn build`
-
-### Legacy mode
-
-This uses the Edamam recipe API - further details at https://developer.edamam.com/.
-
-To get started, run `yarn install` then...
-
-#### To run in development mode
-
-Run `yarn start`
-
-#### To run in production mode
-
-Run `yarn build`
+The app should then be running at http://localhost:3000
