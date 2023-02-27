@@ -105,17 +105,17 @@ export default function Recipe(props) {
                 })}
               </ol>
             </Grid>
+            <Grid
+              item
+              xs={12}
+              style={{ display: 'flex', justifyContent: 'center' }}
+            >
+              <Button onClick={handleRestartClick} endIcon={<AutorenewIcon />}>
+                Start again
+              </Button>
+            </Grid>
           </>
         )}
-        <Grid
-          item
-          xs={12}
-          style={{ display: 'flex', justifyContent: 'center' }}
-        >
-          <Button onClick={handleRestartClick} endIcon={<AutorenewIcon />}>
-            Start again
-          </Button>
-        </Grid>
       </Grid>
     </div>
   );
