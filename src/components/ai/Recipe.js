@@ -80,7 +80,6 @@ export default function Recipe(props) {
               style={{
                 display: 'flex',
                 justifyContent: 'center',
-                alignItems: 'top',
               }}
             >
               {!imgURL ? (
