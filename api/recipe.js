@@ -1,6 +1,6 @@
 export const config = {
-  runtime: 'edge', // this is a pre-requisite
-  regions: ['iad1'], // only execute this function on iad1
+  runtime: 'edge',
+  regions: ['iad1'],
 };
 
 export default async function recipe(req) {
@@ -35,13 +35,13 @@ The recipe is as follows:`
 The recipe is as follows:`;
 
   const payload = {
-    model: 'text-davinci-003',
-    prompt,
+    model: 'gpt-3.5-turbo-0301',
+    messages: [{ role: 'user', content: prompt }],
     temperature: 0.5,
     max_tokens: 1000,
   };
 
-  const response = await fetch('https://api.openai.com/v1/completions', {
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${process.env.OPENAI_API_KEY ?? ''}`,
@@ -51,7 +51,7 @@ The recipe is as follows:`;
   });
 
   const resJson = await response.json();
-  const recipe = resJson.choices[0].text;
+  const recipe = resJson.choices[0].message.content;
   const responseBody = { recipe };
   const responseHeaders = { 'Content-Type': 'application/json' };
   const responseObj = new Response(JSON.stringify(responseBody), {
