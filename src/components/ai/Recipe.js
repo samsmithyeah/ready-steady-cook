@@ -53,7 +53,7 @@ export default function Recipe(props) {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              height: '70vh',
+              height: '68vh',
             }}
           >
             <CircularProgress />
@@ -77,7 +77,10 @@ export default function Recipe(props) {
               item
               xs={12}
               sm={6}
-              style={{ display: 'flex', justifyContent: 'center' }}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
             >
               {!imgURL ? (
                 <CircularProgress />
@@ -101,24 +104,17 @@ export default function Recipe(props) {
                 })}
               </ol>
             </Grid>
+            <Grid
+              item
+              xs={12}
+              style={{ display: 'flex', justifyContent: 'center' }}
+            >
+              <Button onClick={handleRestartClick} endIcon={<AutorenewIcon />}>
+                Start again
+              </Button>
+            </Grid>
           </>
         )}
-        <Grid
-          item
-          xs={12}
-          style={{ display: 'flex', justifyContent: 'center' }}
-        >
-          <Button
-            onClick={handleRestartClick}
-            endIcon={<AutorenewIcon />}
-            style={{
-              position: 'absolute',
-              bottom: 5,
-            }}
-          >
-            Start again
-          </Button>
-        </Grid>
       </Grid>
     </div>
   );
