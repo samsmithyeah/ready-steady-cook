@@ -1,6 +1,7 @@
 import { Route, Switch } from 'react-router-dom';
 import { CircularProgress } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 import Generate from './components/ai/Generate';
 import Recipe from './components/ai/Recipe';
 import ChooseIngredients from './components/ai/Ingredients';
@@ -18,6 +19,10 @@ export default function AiApp(props) {
     activeStep,
   } = props;
 
+  const { REACT_APP_IMAGE_URL } = process.env;
+
+  const [isNewRecipe, setIsNewRecipe] = useState(false);
+
   const steps = ['Choose ingredients', 'Choose cuisine type', 'Recipe'];
 
   const dispatch = useDispatch();
@@ -27,7 +32,24 @@ export default function AiApp(props) {
     dispatch(clearIngredients());
     dispatch(generate({}));
     dispatch(generateImage(''));
+    setIsNewRecipe(false);
     history.push('/');
+  }
+
+  async function handleGenerateImage(recipeTitle) {
+    try {
+      const response = await fetch(REACT_APP_IMAGE_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ recipeTitle }),
+      });
+      const { imageURL } = await response.json();
+      dispatch(generateImage(imageURL));
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -56,11 +78,18 @@ export default function AiApp(props) {
               setIsLoading={setIsLoading}
               history={history}
               inputRef={inputRef}
+              handleGenerateImage={handleGenerateImage}
+              setIsNewRecipe={setIsNewRecipe}
             />
           )}
         </Route>
         <Route path="/recipe/:uuid">
-          <Recipe classes={classes} handleRestartClick={handleRestartClick} />
+          <Recipe
+            classes={classes}
+            handleRestartClick={handleRestartClick}
+            handleGenerateImage={handleGenerateImage}
+            isNewRecipe={isNewRecipe}
+          />
         </Route>
       </Switch>
     </>

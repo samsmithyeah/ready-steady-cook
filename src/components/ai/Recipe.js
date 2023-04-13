@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import supabase from '../../supabaseClient';
 
 export default function Recipe(props) {
-  const { handleRestartClick } = props;
+  const { handleRestartClick, handleGenerateImage, isNewRecipe } = props;
   const [recipeLatestVersion, setRecipeLatestVersion] = useState(null);
   const [ingredientsLatestVersion, setIngredientsLatestVersion] = useState([]);
   const { uuid } = useParams();
@@ -31,30 +31,30 @@ export default function Recipe(props) {
 
   useEffect(() => {
     async function fetchAndSetRecipeData() {
-      if (!recipe.length && uuid) {
+      if (!isNewRecipe && uuid) {
         const data = await fetchRecipeByUUID(uuid);
         setRecipeLatestVersion(data);
       } else if (recipe.length > 0) {
         setRecipeLatestVersion(JSON.parse(recipe));
-      } else {
-        console.log('how did we end up here?');
       }
     }
 
     fetchAndSetRecipeData();
-  }, [uuid, recipe, ingredients]);
+  }, [uuid, recipe, ingredients, isNewRecipe]);
 
   useEffect(() => {
-    if (ingredients.length > 0) {
+    if (isNewRecipe) {
       setIngredientsLatestVersion(ingredients);
-      console.log('ingredientsLatestVersion1', ingredientsLatestVersion);
-    } else if (recipeLatestVersion) {
+    } else if (!isNewRecipe && recipeLatestVersion) {
       setIngredientsLatestVersion(recipeLatestVersion.input_ingredients);
-      console.log('ingredientsLatestVersion2', ingredientsLatestVersion);
-    } else {
-      console.log('how did we end up here?');
     }
-  }, [ingredients, ingredientsLatestVersion, recipeLatestVersion]);
+  }, [ingredients, ingredientsLatestVersion, isNewRecipe, recipeLatestVersion]);
+
+  useEffect(() => {
+    if (!imgURL && recipeLatestVersion) {
+      handleGenerateImage(recipeLatestVersion.title);
+    }
+  }, [imgURL, recipeLatestVersion, handleGenerateImage]);
 
   function resultsHeading() {
     if (ingredientsLatestVersion.length === 0) {

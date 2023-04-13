@@ -13,15 +13,15 @@ import TypingTitle from '../common/TypingTitle.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useRef, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { generate, generateImage } from '../../redux/ai/recipeSlice.js';
+import { generate } from '../../redux/ai/recipeSlice.js';
 import { addCuisineType } from '../../redux/ai/inputSlice.js';
 
 export default function Generate(props) {
-  const { handleRestartClick, history } = props;
+  const { handleRestartClick, history, setIsNewRecipe } = props;
   const { ingredients, cuisineType } = useSelector((state) => state.input);
   const [customType, setCustomType] = useState(false);
   const inputEl = useRef(null);
-  const { REACT_APP_RECIPE_URL, REACT_APP_IMAGE_URL } = process.env;
+  const { REACT_APP_RECIPE_URL } = process.env;
 
   useEffect(() => {
     if (customType) {
@@ -33,6 +33,7 @@ export default function Generate(props) {
 
   async function handleGenerateRecipe(event) {
     event.preventDefault();
+    setIsNewRecipe(true);
     const uuid = uuidv4();
     history.push(`/recipe/${uuid}`);
     try {
@@ -43,27 +44,8 @@ export default function Generate(props) {
         },
         body: JSON.stringify({ ingredients, cuisineType, uuid }),
       });
-      const { recipe } = await response.json(); // Update this line to get the uuid
-      console.log('Generate.js: uuid:', uuid);
+      const { recipe } = await response.json();
       dispatch(generate(recipe));
-      const recipeJSON = JSON.parse(recipe);
-      await handleGenerateImage(recipeJSON.title);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async function handleGenerateImage(recipeTitle) {
-    try {
-      const response = await fetch(REACT_APP_IMAGE_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ recipeTitle }),
-      });
-      const { imageURL } = await response.json();
-      dispatch(generateImage(imageURL));
     } catch (error) {
       console.error(error);
     }
