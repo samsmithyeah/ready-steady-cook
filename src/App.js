@@ -7,7 +7,7 @@ import {
 import { CssBaseline, Paper } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
 import { useEffect, useState, useRef } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import AiApp from './AiApp.js';
 import LegacyApp from './LegacyApp.js';
 import ToolBar from './components/common/Toolbar/ToolBar.js';
@@ -55,19 +55,25 @@ export default function App() {
     },
   });
 
+  const recipeMatch = useRouteMatch('/recipe/:uuid');
+
   useEffect(() => {
     switch (location.pathname) {
       case '/':
-        inputRef.current.focus();
+        inputRef.current && inputRef.current.focus();
         setActiveStep(0);
         break;
       case '/cuisine':
-        !aiIngredients && history.push('/');
+        if (!aiIngredients || aiIngredients.length === 0) {
+          history.push('/');
+        }
         mode === 'legacy' && history.push('/');
         setActiveStep(1);
         break;
       case '/recipe':
-        !aiIngredients && history.push('/');
+        if (!aiIngredients || aiIngredients.length === 0) {
+          history.push('/');
+        }
         !recipe && history.push('/');
         mode === 'legacy' && history.push('/');
         setActiveStep(3);
@@ -84,7 +90,20 @@ export default function App() {
         setActiveStep(3);
         break;
       default:
-        history.push('/');
+        if (recipeMatch) {
+          console.log('Matched /recipe/:uuid route');
+          if (!aiIngredients) {
+            console.log('Redirecting to homepage: aiIngredients not set');
+            history.push('/');
+          }
+          if (mode === 'legacy') {
+            console.log('Redirecting to homepage: mode is legacy');
+            history.push('/');
+          }
+          setActiveStep(3);
+        } else {
+          history.push('/');
+        }
     }
   }, [
     location,
@@ -94,6 +113,7 @@ export default function App() {
     searchTerm,
     mode,
     recipe,
+    recipeMatch,
   ]);
 
   function handleThemeChange(event) {

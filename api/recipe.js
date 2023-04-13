@@ -1,11 +1,13 @@
+import supabase from '../src/supabaseClient';
+
 export const config = {
   runtime: 'edge',
   regions: ['iad1'],
 };
 
-export default async function recipe(req) {
+export default async function generateRecipe(req) {
   const reqJson = await req.json();
-  const { ingredients, cuisineType } = reqJson;
+  const { ingredients, cuisineType, uuid } = reqJson;
 
   const basePrompt = `Generate a recipe containing the following ingredients: ${ingredients.join(
     ', ',
@@ -50,9 +52,31 @@ The recipe is as follows:`;
     body: JSON.stringify(payload),
   });
 
-  const resJson = await response.json();
-  const recipe = resJson.choices[0].message.content;
-  const responseBody = { recipe };
+  const responseJson = await response.json();
+  const recipe = responseJson.choices[0].message.content;
+  const recipeJson = JSON.parse(recipe);
+
+  const { data, error } = await supabase.from('recipes').insert([
+    {
+      id: uuid,
+      input_ingredients: ingredients,
+      input_cuisine_type: cuisineType,
+      title: recipeJson.title,
+      prep_time: recipeJson.prepTime,
+      cook_time: recipeJson.cookTime,
+      total_time: recipeJson.totalTime,
+      servings: recipeJson.servings,
+      description: recipeJson.description,
+      ingredients: recipeJson.ingredients,
+      method: recipeJson.method,
+    },
+  ]);
+
+  if (error) {
+    console.error('Error storing recipe in Supabase:', error);
+  }
+
+  const responseBody = { recipe, uuid };
   const responseHeaders = { 'Content-Type': 'application/json' };
   const responseObj = new Response(JSON.stringify(responseBody), {
     headers: responseHeaders,

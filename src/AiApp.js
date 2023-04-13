@@ -17,6 +17,7 @@ export default function AiApp(props) {
     history,
     activeStep,
   } = props;
+
   const steps = ['Choose ingredients', 'Choose cuisine type', 'Recipe'];
 
   const dispatch = useDispatch();
@@ -58,7 +59,7 @@ export default function AiApp(props) {
             />
           )}
         </Route>
-        <Route exact path="/recipe">
+        <Route path="/recipe/:uuid">
           <Recipe classes={classes} handleRestartClick={handleRestartClick} />
         </Route>
       </Switch>

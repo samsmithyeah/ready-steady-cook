@@ -12,11 +12,12 @@ import AutorenewIcon from '@material-ui/icons/Autorenew';
 import TypingTitle from '../common/TypingTitle.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useRef, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { generate, generateImage } from '../../redux/ai/recipeSlice.js';
 import { addCuisineType } from '../../redux/ai/inputSlice.js';
 
 export default function Generate(props) {
-  const { history, handleRestartClick } = props;
+  const { handleRestartClick, history } = props;
   const { ingredients, cuisineType } = useSelector((state) => state.input);
   const [customType, setCustomType] = useState(false);
   const inputEl = useRef(null);
@@ -32,16 +33,18 @@ export default function Generate(props) {
 
   async function handleGenerateRecipe(event) {
     event.preventDefault();
-    history.push('/recipe');
+    const uuid = uuidv4();
+    history.push(`/recipe/${uuid}`);
     try {
       const response = await fetch(REACT_APP_RECIPE_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ingredients, cuisineType }),
+        body: JSON.stringify({ ingredients, cuisineType, uuid }),
       });
-      const { recipe } = await response.json();
+      const { recipe } = await response.json(); // Update this line to get the uuid
+      console.log('Generate.js: uuid:', uuid);
       dispatch(generate(recipe));
       const recipeJSON = JSON.parse(recipe);
       await handleGenerateImage(recipeJSON.title);
