@@ -10,6 +10,7 @@ export default function Recipe(props) {
   const { handleRestartClick, handleGenerateImage, isNewRecipe } = props;
   const [recipeLatestVersion, setRecipeLatestVersion] = useState(null);
   const [ingredientsLatestVersion, setIngredientsLatestVersion] = useState([]);
+  const [isError, setIsError] = useState(false);
   const { uuid } = useParams();
 
   async function fetchRecipeByUUID(uuid) {
@@ -20,6 +21,7 @@ export default function Recipe(props) {
       .single();
 
     if (error) {
+      setIsError(true);
       console.error('Error fetching recipe:', error);
       return null;
     }
@@ -87,7 +89,9 @@ export default function Recipe(props) {
           )}
           <br />
         </Grid>
-        {!recipeLatestVersion ? (
+        {isError ? (
+          <TypingTitle text={resultsHeading()} />
+        ) : !recipeLatestVersion ? (
           <Grid
             item
             xs={12}
@@ -146,17 +150,17 @@ export default function Recipe(props) {
                 })}
               </ol>
             </Grid>
-            <Grid
-              item
-              xs={12}
-              style={{ display: 'flex', justifyContent: 'center' }}
-            >
-              <Button onClick={handleRestartClick} endIcon={<AutorenewIcon />}>
-                Start again
-              </Button>
-            </Grid>
           </>
         )}
+        <Grid
+          item
+          xs={12}
+          style={{ display: 'flex', justifyContent: 'center' }}
+        >
+          <Button onClick={handleRestartClick} endIcon={<AutorenewIcon />}>
+            Start again
+          </Button>
+        </Grid>
       </Grid>
     </div>
   );
