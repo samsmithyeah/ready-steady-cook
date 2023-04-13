@@ -91,7 +91,6 @@ export default function App() {
         break;
       default:
         if (recipeMatch) {
-          console.log('Matched /recipe/:uuid route');
           if (!aiIngredients) {
             console.log('Redirecting to homepage: aiIngredients not set');
             history.push('/');

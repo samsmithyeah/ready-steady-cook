@@ -22,6 +22,10 @@ export default function AiApp(props) {
   const { REACT_APP_IMAGE_URL } = process.env;
 
   const [isNewRecipe, setIsNewRecipe] = useState(false);
+  const [customType, setCustomType] = useState(false);
+  const [recipeLatestVersion, setRecipeLatestVersion] = useState(null);
+  const [ingredientsLatestVersion, setIngredientsLatestVersion] = useState([]);
+  const [isError, setIsError] = useState(false);
 
   const steps = ['Choose ingredients', 'Choose cuisine type', 'Recipe'];
 
@@ -32,6 +36,10 @@ export default function AiApp(props) {
     dispatch(clearIngredients());
     dispatch(generate({}));
     dispatch(generateImage(''));
+    setCustomType(false);
+    setRecipeLatestVersion(null);
+    setIngredientsLatestVersion([]);
+    setIsError(false);
     setIsNewRecipe(false);
     history.push('/');
   }
@@ -80,15 +88,24 @@ export default function AiApp(props) {
               inputRef={inputRef}
               handleGenerateImage={handleGenerateImage}
               setIsNewRecipe={setIsNewRecipe}
+              customType={customType}
+              setCustomType={setCustomType}
+              setRecipeLatestVersion={setRecipeLatestVersion}
+              setIsError={setIsError}
             />
           )}
         </Route>
         <Route path="/recipe/:uuid">
           <Recipe
-            classes={classes}
             handleRestartClick={handleRestartClick}
             handleGenerateImage={handleGenerateImage}
             isNewRecipe={isNewRecipe}
+            recipeLatestVersion={recipeLatestVersion}
+            setRecipeLatestVersion={setRecipeLatestVersion}
+            ingredientsLatestVersion={ingredientsLatestVersion}
+            setIngredientsLatestVersion={setIngredientsLatestVersion}
+            isError={isError}
+            setIsError={setIsError}
           />
         </Route>
       </Switch>

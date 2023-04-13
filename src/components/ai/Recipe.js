@@ -3,35 +3,41 @@ import TypingTitle from '../common/TypingTitle';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import supabase from '../../supabaseClient';
 
 export default function Recipe(props) {
-  const { handleRestartClick, handleGenerateImage, isNewRecipe } = props;
-  const [recipeLatestVersion, setRecipeLatestVersion] = useState(null);
-  const [ingredientsLatestVersion, setIngredientsLatestVersion] = useState([]);
-  const [isError, setIsError] = useState(false);
+  const {
+    handleRestartClick,
+    handleGenerateImage,
+    isNewRecipe,
+    recipeLatestVersion,
+    setRecipeLatestVersion,
+    ingredientsLatestVersion,
+    setIngredientsLatestVersion,
+    isError,
+    setIsError,
+  } = props;
   const { uuid } = useParams();
-
-  async function fetchRecipeByUUID(uuid) {
-    const { data, error } = await supabase
-      .from('recipes')
-      .select('*')
-      .eq('id', uuid)
-      .single();
-
-    if (error) {
-      setIsError(true);
-      console.error('Error fetching recipe:', error);
-      return null;
-    }
-    return data;
-  }
 
   const { imgURL, recipe } = useSelector((state) => state.recipe);
   const { ingredients } = useSelector((state) => state.input);
 
   useEffect(() => {
+    async function fetchRecipeByUUID(uuid) {
+      const { data, error } = await supabase
+        .from('recipes')
+        .select('*')
+        .eq('id', uuid)
+        .single();
+
+      if (error) {
+        setIsError(true);
+        console.error('Error fetching recipe:', error);
+        return null;
+      }
+      return data;
+    }
     async function fetchAndSetRecipeData() {
       if (!isNewRecipe && uuid) {
         const data = await fetchRecipeByUUID(uuid);
@@ -42,7 +48,14 @@ export default function Recipe(props) {
     }
 
     fetchAndSetRecipeData();
-  }, [uuid, recipe, ingredients, isNewRecipe]);
+  }, [
+    uuid,
+    recipe,
+    ingredients,
+    isNewRecipe,
+    setRecipeLatestVersion,
+    setIsError,
+  ]);
 
   useEffect(() => {
     if (isNewRecipe) {
@@ -50,7 +63,13 @@ export default function Recipe(props) {
     } else if (!isNewRecipe && recipeLatestVersion) {
       setIngredientsLatestVersion(recipeLatestVersion.input_ingredients);
     }
-  }, [ingredients, ingredientsLatestVersion, isNewRecipe, recipeLatestVersion]);
+  }, [
+    ingredients,
+    ingredientsLatestVersion,
+    isNewRecipe,
+    recipeLatestVersion,
+    setIngredientsLatestVersion,
+  ]);
 
   useEffect(() => {
     if (!imgURL && recipeLatestVersion) {

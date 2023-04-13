@@ -11,15 +11,22 @@ import SendIcon from '@material-ui/icons/Send';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import TypingTitle from '../common/TypingTitle.js';
 import { useSelector, useDispatch } from 'react-redux';
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { generate } from '../../redux/ai/recipeSlice.js';
+import { generate, generateImage } from '../../redux/ai/recipeSlice.js';
 import { addCuisineType } from '../../redux/ai/inputSlice.js';
 
 export default function Generate(props) {
-  const { handleRestartClick, history, setIsNewRecipe } = props;
+  const {
+    handleRestartClick,
+    history,
+    setIsNewRecipe,
+    customType,
+    setCustomType,
+    setRecipeLatestVersion,
+    setIsError,
+  } = props;
   const { ingredients, cuisineType } = useSelector((state) => state.input);
-  const [customType, setCustomType] = useState(false);
   const inputEl = useRef(null);
   const { REACT_APP_RECIPE_URL } = process.env;
 
@@ -34,6 +41,10 @@ export default function Generate(props) {
   async function handleGenerateRecipe(event) {
     event.preventDefault();
     setIsNewRecipe(true);
+    setIsError(false);
+    dispatch(generate({}));
+    dispatch(generateImage(''));
+    setRecipeLatestVersion(null);
     const uuid = uuidv4();
     history.push(`/recipe/${uuid}`);
     try {
@@ -105,6 +116,7 @@ export default function Generate(props) {
                       onChange={handleSetCuisineType}
                       inputRef={inputEl}
                       onClick={() => setCustomType(true)}
+                      value={cuisineType}
                     />
                   }
                 />
