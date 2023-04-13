@@ -128,11 +128,15 @@ export default function Recipe(props) {
             <Grid item xs={12} sm={6}>
               <h1>{recipeLatestVersion.title}</h1>
               <p>
-                <strong>Prep Time:</strong> {recipeLatestVersion.prep_time}
+                <strong>Prep Time:</strong>{' '}
+                {recipeLatestVersion.prep_time || recipeLatestVersion.prepTime}
                 <br />
-                <strong>Cook Time:</strong> {recipeLatestVersion.cook_time}
+                <strong>Cook Time:</strong>{' '}
+                {recipeLatestVersion.cook_time || recipeLatestVersion.cookTime}
                 <br />
-                <strong>Total Time:</strong> {recipeLatestVersion.total_time}
+                <strong>Total Time:</strong>{' '}
+                {recipeLatestVersion.total_time ||
+                  recipeLatestVersion.totalTime}
                 <br />
                 <strong>Servings:</strong> {recipeLatestVersion.servings}
               </p>
