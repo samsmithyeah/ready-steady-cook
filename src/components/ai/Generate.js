@@ -1,5 +1,6 @@
 import {
   Button,
+  Box,
   TextField,
   Grid,
   RadioGroup,
@@ -95,30 +96,42 @@ export default function Generate(props) {
                 onChange={handleCustomToggle}
                 defaultValue="default"
               >
-                <FormControlLabel
-                  value="default"
-                  control={<Radio />}
-                  label="I don't care"
-                  checked={!customType}
-                />
-                <FormControlLabel
-                  value="custom"
-                  control={<Radio />}
-                  label="This please:"
-                  checked={customType}
-                />
-                <FormControlLabel
-                  disabled={!customType}
-                  control={
-                    <TextField
-                      inputProps={{ 'aria-label': 'cuisine-type' }}
-                      onChange={handleSetCuisineType}
-                      inputRef={inputEl}
-                      onClick={() => setCustomType(true)}
-                      value={cuisineType}
-                    />
-                  }
-                />
+                <Grid
+                  container
+                  direction="column"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Grid item xs={12}>
+                    <Grid container direction="column" alignItems="flex-start">
+                      <FormControlLabel
+                        value="default"
+                        control={<Radio />}
+                        label="I don't care"
+                        checked={!customType}
+                      />
+                      <FormControlLabel
+                        value="custom"
+                        control={<Radio />}
+                        label="This please:"
+                        checked={customType}
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Box mt={1}>
+                      <TextField
+                        fullWidth
+                        disabled={!customType}
+                        inputProps={{ 'aria-label': 'cuisine-type' }}
+                        onChange={handleSetCuisineType}
+                        inputRef={inputEl}
+                        onClick={() => setCustomType(true)}
+                        value={cuisineType}
+                      />
+                    </Box>
+                  </Grid>
+                </Grid>
               </RadioGroup>
             </FormControl>
           </Grid>
