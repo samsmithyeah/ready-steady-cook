@@ -38,7 +38,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           build: yarn run build
-          start: npx serve -s build -l 3000
+          start: npx serve -L -s build -l 3000
           wait-on: 'http://localhost:3000'
           browser: chrome
 
