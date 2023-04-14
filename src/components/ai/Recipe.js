@@ -2,33 +2,94 @@ import { Button, Grid, CircularProgress } from '@material-ui/core';
 import TypingTitle from '../common/TypingTitle';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import supabase from '../../supabaseClient';
 
 export default function Recipe(props) {
-  const { handleRestartClick } = props;
+  const {
+    handleRestartClick,
+    handleGenerateImage,
+    isNewRecipe,
+    recipeLatestVersion,
+    setRecipeLatestVersion,
+    ingredientsLatestVersion,
+    setIngredientsLatestVersion,
+    isError,
+    setIsError,
+  } = props;
+  const { uuid } = useParams();
 
   const { imgURL, recipe } = useSelector((state) => state.recipe);
   const { ingredients } = useSelector((state) => state.input);
 
-  function waitForRecipe() {
-    if (recipe.length > 0) {
-      return JSON.parse(recipe);
-    } else {
-      setTimeout(waitForRecipe, 250);
+  useEffect(() => {
+    async function fetchRecipeByUUID(uuid) {
+      const { data, error } = await supabase
+        .from('recipes')
+        .select('*')
+        .eq('id', uuid)
+        .single();
+
+      if (error) {
+        setIsError(true);
+        console.error('Error fetching recipe:', error);
+        return null;
+      }
+      return data;
     }
-  }
-  const recipeJSON = waitForRecipe();
+    async function fetchAndSetRecipeData() {
+      if (!isNewRecipe && uuid) {
+        const data = await fetchRecipeByUUID(uuid);
+        setRecipeLatestVersion(data);
+      } else if (recipe.length > 0) {
+        setRecipeLatestVersion(JSON.parse(recipe));
+      }
+    }
+
+    fetchAndSetRecipeData();
+  }, [
+    uuid,
+    recipe,
+    ingredients,
+    isNewRecipe,
+    setRecipeLatestVersion,
+    setIsError,
+  ]);
+
+  useEffect(() => {
+    if (isNewRecipe) {
+      setIngredientsLatestVersion(ingredients);
+    } else if (!isNewRecipe && recipeLatestVersion) {
+      setIngredientsLatestVersion(recipeLatestVersion.input_ingredients);
+    }
+  }, [
+    ingredients,
+    ingredientsLatestVersion,
+    isNewRecipe,
+    recipeLatestVersion,
+    setIngredientsLatestVersion,
+  ]);
+
+  useEffect(() => {
+    if (!imgURL && recipeLatestVersion) {
+      handleGenerateImage(recipeLatestVersion.title);
+    }
+  }, [imgURL, recipeLatestVersion, handleGenerateImage]);
 
   function resultsHeading() {
-    if (ingredients.length === 0) {
+    if (ingredientsLatestVersion.length === 0) {
       return 'Something went wrong. No ingredients found. Please try again.';
-    } else if (ingredients.length === 1) {
-      return `With your ${ingredients[0].toLowerCase()} you could make...`;
-    } else if (ingredients.length === 2) {
-      return `With your ${ingredients[0].toLowerCase()} and ${ingredients[1].toLowerCase()} you could make...`;
+    } else if (ingredientsLatestVersion.length === 1) {
+      return `With your ${ingredientsLatestVersion[0].toLowerCase()} you could make...`;
+    } else if (ingredientsLatestVersion.length === 2) {
+      return `With your ${ingredientsLatestVersion[0].toLowerCase()} and ${ingredientsLatestVersion[1].toLowerCase()} you could make...`;
     } else {
-      return `With your ${ingredients[0].toLowerCase()}, ${ingredients
+      return `With your ${ingredientsLatestVersion[0].toLowerCase()}, ${ingredientsLatestVersion
         .slice(1, -1)
-        .join(', ')} and ${ingredients.slice(-1)} you could make...`;
+        .join(', ')} and ${ingredientsLatestVersion.slice(
+        -1,
+      )} you could make...`;
     }
   }
 
@@ -42,10 +103,14 @@ export default function Recipe(props) {
         }}
       >
         <Grid item xs={12} style={{ textAlign: 'center' }}>
-          <TypingTitle text={resultsHeading()} />
+          {ingredientsLatestVersion.length > 0 && (
+            <TypingTitle text={resultsHeading()} />
+          )}
           <br />
         </Grid>
-        {!recipeJSON ? (
+        {isError ? (
+          <TypingTitle text={resultsHeading()} />
+        ) : !recipeLatestVersion ? (
           <Grid
             item
             xs={12}
@@ -61,17 +126,21 @@ export default function Recipe(props) {
         ) : (
           <>
             <Grid item xs={12} sm={6}>
-              <h1>{recipeJSON.title}</h1>
+              <h1>{recipeLatestVersion.title}</h1>
               <p>
-                <strong>Prep Time:</strong> {recipeJSON.prepTime}
+                <strong>Prep Time:</strong>{' '}
+                {recipeLatestVersion.prep_time || recipeLatestVersion.prepTime}
                 <br />
-                <strong>Cook Time:</strong> {recipeJSON.cookTime}
+                <strong>Cook Time:</strong>{' '}
+                {recipeLatestVersion.cook_time || recipeLatestVersion.cookTime}
                 <br />
-                <strong>Total Time:</strong> {recipeJSON.totalTime}
+                <strong>Total Time:</strong>{' '}
+                {recipeLatestVersion.total_time ||
+                  recipeLatestVersion.totalTime}
                 <br />
-                <strong>Servings:</strong> {recipeJSON.servings}
+                <strong>Servings:</strong> {recipeLatestVersion.servings}
               </p>
-              <p>{recipeJSON.description}</p>
+              <p>{recipeLatestVersion.description}</p>
             </Grid>
             <Grid
               item
@@ -91,7 +160,7 @@ export default function Recipe(props) {
             <Grid item xs={12} sm={6}>
               <h2>Ingredients</h2>
               <ul>
-                {recipeJSON.ingredients.map((ingredient) => {
+                {recipeLatestVersion.ingredients.map((ingredient) => {
                   return <li key={ingredient}>{ingredient}</li>;
                 })}
               </ul>
@@ -99,22 +168,22 @@ export default function Recipe(props) {
             <Grid item xs={12}>
               <h2>Method</h2>
               <ol>
-                {recipeJSON.method.map((step) => {
+                {recipeLatestVersion.method.map((step) => {
                   return <li key={step}>{step}</li>;
                 })}
               </ol>
             </Grid>
-            <Grid
-              item
-              xs={12}
-              style={{ display: 'flex', justifyContent: 'center' }}
-            >
-              <Button onClick={handleRestartClick} endIcon={<AutorenewIcon />}>
-                Start again
-              </Button>
-            </Grid>
           </>
         )}
+        <Grid
+          item
+          xs={12}
+          style={{ display: 'flex', justifyContent: 'center' }}
+        >
+          <Button onClick={handleRestartClick} endIcon={<AutorenewIcon />}>
+            Start again
+          </Button>
+        </Grid>
       </Grid>
     </div>
   );

@@ -11,16 +11,24 @@ import SendIcon from '@material-ui/icons/Send';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import TypingTitle from '../common/TypingTitle.js';
 import { useSelector, useDispatch } from 'react-redux';
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { generate, generateImage } from '../../redux/ai/recipeSlice.js';
 import { addCuisineType } from '../../redux/ai/inputSlice.js';
 
 export default function Generate(props) {
-  const { history, handleRestartClick } = props;
+  const {
+    handleRestartClick,
+    history,
+    setIsNewRecipe,
+    customType,
+    setCustomType,
+    setRecipeLatestVersion,
+    setIsError,
+  } = props;
   const { ingredients, cuisineType } = useSelector((state) => state.input);
-  const [customType, setCustomType] = useState(false);
   const inputEl = useRef(null);
-  const { REACT_APP_RECIPE_URL, REACT_APP_IMAGE_URL } = process.env;
+  const { REACT_APP_RECIPE_URL } = process.env;
 
   useEffect(() => {
     if (customType) {
@@ -32,35 +40,23 @@ export default function Generate(props) {
 
   async function handleGenerateRecipe(event) {
     event.preventDefault();
-    history.push('/recipe');
+    setIsNewRecipe(true);
+    setIsError(false);
+    dispatch(generate({}));
+    dispatch(generateImage(''));
+    setRecipeLatestVersion(null);
+    const uuid = uuidv4();
+    history.push(`/recipe/${uuid}`);
     try {
       const response = await fetch(REACT_APP_RECIPE_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ingredients, cuisineType }),
+        body: JSON.stringify({ ingredients, cuisineType, uuid }),
       });
       const { recipe } = await response.json();
       dispatch(generate(recipe));
-      const recipeJSON = JSON.parse(recipe);
-      await handleGenerateImage(recipeJSON.title);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async function handleGenerateImage(recipeTitle) {
-    try {
-      const response = await fetch(REACT_APP_IMAGE_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ recipeTitle }),
-      });
-      const { imageURL } = await response.json();
-      dispatch(generateImage(imageURL));
     } catch (error) {
       console.error(error);
     }
@@ -120,6 +116,7 @@ export default function Generate(props) {
                       onChange={handleSetCuisineType}
                       inputRef={inputEl}
                       onClick={() => setCustomType(true)}
+                      value={cuisineType}
                     />
                   }
                 />
