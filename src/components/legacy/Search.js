@@ -1,5 +1,4 @@
 import { Button, TextField, Grid } from '@material-ui/core';
-import SendIcon from '@material-ui/icons/Send';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import TypingTitle from '../common/TypingTitle.js';
 import { useSelector, useDispatch } from 'react-redux';
@@ -66,7 +65,6 @@ export default function Search(props) {
               variant="contained"
               color="primary"
               type="submit"
-              endIcon={<SendIcon />}
             >
               Next
             </Button>

@@ -53,6 +53,18 @@ export default function App() {
     typography: {
       fontFamily: 'Manrope, sans-serif',
     },
+    overrides: {
+      MuiButton: {
+        root: {
+          textTransform: 'none',
+        },
+        sizeLarge: {
+          fontWeight: 'bold',
+          fontSize: '1.2rem',
+          borderRadius: '0.6rem',
+        },
+      },
+    },
   });
 
   const recipeMatch = useRouteMatch('/recipe/:uuid');

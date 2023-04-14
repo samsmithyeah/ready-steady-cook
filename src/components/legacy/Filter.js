@@ -2,7 +2,6 @@ import { Button, IconButton, TextField, Grid } from '@material-ui/core';
 import FilterChips from '../common/FilterChips.js';
 import TypingTitle from '../common/TypingTitle.js';
 import AddIcon from '@material-ui/icons/Add';
-import SendIcon from '@material-ui/icons/Send';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -101,9 +100,9 @@ export default function Filter(props) {
             variant="contained"
             color="primary"
             onClick={handleFilterResults}
-            endIcon={<SendIcon />}
             disabled={filteredResults.length === 0}
             disableElevation
+            size="large"
           >
             {viewResultsButtonText()}
           </Button>

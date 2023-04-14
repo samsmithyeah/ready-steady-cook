@@ -7,7 +7,6 @@ import {
   FormControl,
   FormControlLabel,
 } from '@material-ui/core';
-import SendIcon from '@material-ui/icons/Send';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import TypingTitle from '../common/TypingTitle.js';
 import { useSelector, useDispatch } from 'react-redux';
@@ -128,11 +127,11 @@ export default function Generate(props) {
               variant="contained"
               type="submit"
               color="primary"
-              endIcon={<SendIcon />}
               disabled={customType && !cuisineType}
               disableElevation
+              size="large"
             >
-              Generate a recipe
+              Generate
             </Button>
           </Grid>
           <Grid

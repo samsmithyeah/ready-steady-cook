@@ -1,7 +1,6 @@
 import { Button, TextField, IconButton, Grid } from '@material-ui/core';
 import FilterChips from '../common/FilterChips.js';
 import TypingTitle from '../common/TypingTitle.js';
-import SendIcon from '@material-ui/icons/Send';
 import AddIcon from '@material-ui/icons/Add';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import { useSelector, useDispatch } from 'react-redux';
@@ -64,9 +63,9 @@ export default function ChooseIngredients(props) {
             variant="contained"
             color="primary"
             onClick={handleGoToNextPage}
-            endIcon={<SendIcon />}
             disabled={ingredients.length === 0}
             disableElevation
+            size="large"
           >
             Next
           </Button>
