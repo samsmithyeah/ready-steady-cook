@@ -38,7 +38,8 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           build: yarn run build
-          start: yarn start
+          start: npx serve -L -s build -l 3000
+          wait-on: 'http://localhost:3000'
           browser: chrome
 
       # Upload Cypress artifacts (screenshots and videos)
