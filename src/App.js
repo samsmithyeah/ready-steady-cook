@@ -64,6 +64,18 @@ export default function App() {
           borderRadius: '0.6rem',
         },
       },
+      MuiStepIcon: {
+        root: {
+          '&$completed': {
+            color: '#50b842',
+          },
+          // '&$active': {
+          //   color: 'blue',
+          // },
+        },
+        active: {},
+        completed: {},
+      },
     },
   });
 
@@ -88,7 +100,7 @@ export default function App() {
         }
         !recipe && history.push('/');
         mode === 'legacy' && history.push('/');
-        setActiveStep(3);
+        !activeStep === 3 && setActiveStep(2);
         break;
       case '/filters':
         !searchTerm && history.push('/');
@@ -111,7 +123,6 @@ export default function App() {
             console.log('Redirecting to homepage: mode is legacy');
             history.push('/');
           }
-          setActiveStep(3);
         } else {
           history.push('/');
         }
@@ -125,6 +136,7 @@ export default function App() {
     mode,
     recipe,
     recipeMatch,
+    activeStep,
   ]);
 
   function handleThemeChange(event) {
@@ -155,6 +167,7 @@ export default function App() {
                 inputRef={inputRef}
                 classes={classes}
                 activeStep={activeStep}
+                setActiveStep={setActiveStep}
               />
             ) : (
               <LegacyApp

@@ -25,6 +25,7 @@ export default function Generate(props) {
     setCustomType,
     setRecipeLatestVersion,
     setIsError,
+    setActiveStep,
   } = props;
   const { ingredients, cuisineType } = useSelector((state) => state.input);
   const inputEl = useRef(null);
@@ -47,6 +48,7 @@ export default function Generate(props) {
     setRecipeLatestVersion(null);
     const uuid = uuidv4();
     history.push(`/recipe/${uuid}`);
+    setActiveStep(2);
     try {
       const response = await fetch(REACT_APP_RECIPE_URL, {
         method: 'POST',
