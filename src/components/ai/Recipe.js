@@ -206,7 +206,7 @@ export default function Recipe(props) {
                 onClick={handleShareClick}
                 startIcon={<TwitterIcon />}
               >
-                Share on Twitter
+                Share recipe on Twitter
               </Button>
             </Grid>
           </>
