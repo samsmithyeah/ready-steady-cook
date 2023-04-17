@@ -106,8 +106,7 @@ export default function Recipe(props) {
       .map((ingredient) => encodeURIComponent(ingredient.toLowerCase()))
       .join(',');
     const hashtags = `recipe,cooking,ai,${ingredientsHashtags}`;
-    const text = `Check out this delicious AI generated recipe for ${recipeTitle}!
-    `;
+    const text = `Check out this delicious AI generated recipe for ${recipeTitle}!`;
 
     return `https://twitter.com/intent/tweet?text=${text}&url=${url}&hashtags=${hashtags}`;
   }
@@ -197,6 +196,19 @@ export default function Recipe(props) {
                 })}
               </ol>
             </Grid>
+            <Grid
+              item
+              xs={12}
+              style={{ display: 'flex', justifyContent: 'center' }}
+            >
+              <Button
+                className={classes.twitterButton}
+                onClick={handleShareClick}
+                startIcon={<TwitterIcon />}
+              >
+                Share on Twitter
+              </Button>
+            </Grid>
           </>
         )}
         <Grid
@@ -206,13 +218,6 @@ export default function Recipe(props) {
         >
           <Button onClick={handleRestartClick} endIcon={<AutorenewIcon />}>
             Start again
-          </Button>
-          <Button
-            className={classes.twitterButton}
-            onClick={handleShareClick}
-            startIcon={<TwitterIcon />}
-          >
-            Share on Twitter
           </Button>
         </Grid>
       </Grid>
