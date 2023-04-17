@@ -25,6 +25,11 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(7),
     height: theme.spacing(7),
   },
+  textField: {
+    '& .MuiOutlinedInput-root': {
+      borderRadius: '1.3rem', // Change the borderRadius value to adjust the roundness of the outline
+    },
+  },
 }));
 
 export default function App() {

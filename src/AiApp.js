@@ -74,6 +74,7 @@ export default function AiApp(props) {
               inputRef={inputRef}
               setIsLoading={setIsLoading}
               handleRestartClick={handleRestartClick}
+              classes={classes}
             />
           )}
         </Route>
