@@ -9,7 +9,7 @@ class CuisinePage {
   }
 
   generateButton() {
-    return cy.findByRole('button', { name: 'Generate a recipe' });
+    return cy.findByRole('button', { name: 'Generate' });
   }
 
   nextButton() {

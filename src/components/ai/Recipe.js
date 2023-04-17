@@ -17,6 +17,7 @@ export default function Recipe(props) {
     setIngredientsLatestVersion,
     isError,
     setIsError,
+    setActiveStep,
   } = props;
   const { uuid } = useParams();
 
@@ -42,8 +43,10 @@ export default function Recipe(props) {
       if (!isNewRecipe && uuid) {
         const data = await fetchRecipeByUUID(uuid);
         setRecipeLatestVersion(data);
+        setActiveStep(3);
       } else if (recipe.length > 0) {
         setRecipeLatestVersion(JSON.parse(recipe));
+        setActiveStep(3);
       }
     }
 
@@ -55,6 +58,7 @@ export default function Recipe(props) {
     isNewRecipe,
     setRecipeLatestVersion,
     setIsError,
+    setActiveStep,
   ]);
 
   useEffect(() => {

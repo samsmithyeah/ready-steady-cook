@@ -1,0 +1,33 @@
+{
+  "id": "d12e90af-cab8-4a44-9a22-8902c5499ddc",
+  "input_ingredients": ["bacon", "eggs"],
+  "input_cuisine_type": "chinese",
+  "title": "E2E MOCKED PRE-EXISTING Chinese Bacon and Egg Fried Rice",
+  "prep_time": "10 minutes",
+  "cook_time": "20 minutes",
+  "total_time": "30 minutes",
+  "servings": "4",
+  "description": "This Chinese-inspired dish is a delicious and easy way to use up leftover rice. The salty bacon and creamy eggs add a rich flavor to the dish.",
+  "ingredients": [
+    "4 slices of bacon, diced",
+    "4 eggs, beaten",
+    "4 cups cooked white rice, chilled",
+    "1/2 cup frozen peas",
+    "2 green onions, sliced",
+    "2 tablespoons soy sauce",
+    "1 tablespoon vegetable oil",
+    "Salt and pepper, to taste"
+  ],
+  "method": [
+    "Heat a large skillet or wok over medium-high heat. Add the diced bacon and cook until crispy, about 5 minutes.",
+    "Remove the bacon from the pan and set aside. Drain off all but 1 tablespoon of the bacon grease.",
+    "Add the beaten eggs to the skillet and scramble until cooked through. Remove the eggs from the pan and set aside.",
+    "Add the chilled rice to the skillet and stir-fry for 2-3 minutes, until heated through.",
+    "Add the frozen peas, sliced green onions, and cooked bacon to the skillet. Stir-fry for another 2-3 minutes, until the peas are cooked through.",
+    "Add the scrambled eggs to the skillet and stir-fry for another minute.",
+    "Drizzle soy sauce over the rice and stir-fry for another minute.",
+    "Season with salt and pepper to taste.",
+    "Serve hot and enjoy!"
+  ],
+  "image_url": null
+}

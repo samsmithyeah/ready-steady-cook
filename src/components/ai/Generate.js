@@ -1,5 +1,6 @@
 import {
   Button,
+  Box,
   TextField,
   Grid,
   RadioGroup,
@@ -7,7 +8,6 @@ import {
   FormControl,
   FormControlLabel,
 } from '@material-ui/core';
-import SendIcon from '@material-ui/icons/Send';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import TypingTitle from '../common/TypingTitle.js';
 import { useSelector, useDispatch } from 'react-redux';
@@ -25,6 +25,7 @@ export default function Generate(props) {
     setCustomType,
     setRecipeLatestVersion,
     setIsError,
+    setActiveStep,
   } = props;
   const { ingredients, cuisineType } = useSelector((state) => state.input);
   const inputEl = useRef(null);
@@ -47,6 +48,7 @@ export default function Generate(props) {
     setRecipeLatestVersion(null);
     const uuid = uuidv4();
     history.push(`/recipe/${uuid}`);
+    setActiveStep(2);
     try {
       const response = await fetch(REACT_APP_RECIPE_URL, {
         method: 'POST',
@@ -96,30 +98,42 @@ export default function Generate(props) {
                 onChange={handleCustomToggle}
                 defaultValue="default"
               >
-                <FormControlLabel
-                  value="default"
-                  control={<Radio />}
-                  label="I don't care"
-                  checked={!customType}
-                />
-                <FormControlLabel
-                  value="custom"
-                  control={<Radio />}
-                  label="This please:"
-                  checked={customType}
-                />
-                <FormControlLabel
-                  disabled={!customType}
-                  control={
-                    <TextField
-                      inputProps={{ 'aria-label': 'cuisine-type' }}
-                      onChange={handleSetCuisineType}
-                      inputRef={inputEl}
-                      onClick={() => setCustomType(true)}
-                      value={cuisineType}
-                    />
-                  }
-                />
+                <Grid
+                  container
+                  direction="column"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Grid item xs={12}>
+                    <Grid container direction="column" alignItems="flex-start">
+                      <FormControlLabel
+                        value="default"
+                        control={<Radio />}
+                        label="I don't care"
+                        checked={!customType}
+                      />
+                      <FormControlLabel
+                        value="custom"
+                        control={<Radio />}
+                        label="This please:"
+                        checked={customType}
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Box mt={1}>
+                      <TextField
+                        fullWidth
+                        disabled={!customType}
+                        inputProps={{ 'aria-label': 'cuisine-type' }}
+                        onChange={handleSetCuisineType}
+                        inputRef={inputEl}
+                        onClick={() => setCustomType(true)}
+                        value={cuisineType}
+                      />
+                    </Box>
+                  </Grid>
+                </Grid>
               </RadioGroup>
             </FormControl>
           </Grid>
@@ -128,11 +142,11 @@ export default function Generate(props) {
               variant="contained"
               type="submit"
               color="primary"
-              endIcon={<SendIcon />}
               disabled={customType && !cuisineType}
               disableElevation
+              size="large"
             >
-              Generate a recipe
+              Generate
             </Button>
           </Grid>
           <Grid

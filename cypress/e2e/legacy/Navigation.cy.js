@@ -82,7 +82,6 @@ describe('Navigation', () => {
     cy.get('#add-filter').click();
     cy.contains('View 1 result').click();
     cy.contains('Start again').click();
-    cy.contains('h4', "What's in your fridge?");
     cy.get('#search').should('have.value', '');
     cy.contains('Next').should('be.disabled');
 

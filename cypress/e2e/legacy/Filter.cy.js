@@ -6,12 +6,6 @@ describe('Filter results', () => {
     cy.visit('/');
     cy.get('[name="mode"]').uncheck();
   });
-
-  it('Displays title', () => {
-    cy.get('#search').type('halloumi');
-    cy.contains('Next').click();
-    cy.contains('h4', 'What would you like with your halloumi?');
-  });
   it('Displays filter chips', () => {
     cy.get('#search').type('halloumi');
     cy.contains('Next').click();

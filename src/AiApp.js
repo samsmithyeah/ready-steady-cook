@@ -17,6 +17,7 @@ export default function AiApp(props) {
     inputRef,
     history,
     activeStep,
+    setActiveStep,
   } = props;
 
   const { REACT_APP_IMAGE_URL } = process.env;
@@ -92,6 +93,7 @@ export default function AiApp(props) {
               setCustomType={setCustomType}
               setRecipeLatestVersion={setRecipeLatestVersion}
               setIsError={setIsError}
+              setActiveStep={setActiveStep}
             />
           )}
         </Route>
@@ -106,6 +108,7 @@ export default function AiApp(props) {
             setIngredientsLatestVersion={setIngredientsLatestVersion}
             isError={isError}
             setIsError={setIsError}
+            setActiveStep={setActiveStep}
           />
         </Route>
       </Switch>

@@ -11,11 +11,14 @@ describe('E2E journey for generating a recipe', () => {
     'https://realfood.tesco.com/media/images/RFO-HALLOUMI-Thumb-146x128-mini-8319d2f1-aea1-45ab-bb68-bbb4fee6b39d-0-146x128.jpg';
 
   beforeEach(() => {
-    cy.intercept(`/api/recipe`, {
+    cy.intercept('/api/recipe', {
       fixture: 'mock-openai-recipe.json',
     });
-    cy.intercept(`/api/image`, {
+    cy.intercept('/api/image', {
       fixture: 'mock-openai-image.json',
+    });
+    cy.intercept('https://wzrhbqgdfpnqlwpgmele.supabase.co/rest/v1/recipes*', {
+      fixture: 'mock-supabase-response.json',
     });
   });
 
@@ -55,7 +58,10 @@ describe('E2E journey for generating a recipe', () => {
   it('Fetches a pre-existing recipe', () => {
     recipePage.gotoRecipe('d12e90af-cab8-4a44-9a22-8902c5499ddc');
     cy.contains('h4', 'With your bacon and eggs you could make...');
-    cy.contains('h1', 'E2E PRE-EXISTING Chinese Bacon and Egg Fried Rice');
+    cy.contains(
+      'h1',
+      'E2E MOCKED PRE-EXISTING Chinese Bacon and Egg Fried Rice',
+    );
     cy.get('img').should('have.attr', 'src', mockImageUrl);
   });
 });
