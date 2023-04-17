@@ -74,6 +74,7 @@ export default function AiApp(props) {
               inputRef={inputRef}
               setIsLoading={setIsLoading}
               handleRestartClick={handleRestartClick}
+              classes={classes}
             />
           )}
         </Route>
@@ -109,6 +110,7 @@ export default function AiApp(props) {
             isError={isError}
             setIsError={setIsError}
             setActiveStep={setActiveStep}
+            classes={classes}
           />
         </Route>
       </Switch>

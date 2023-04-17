@@ -25,6 +25,19 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(7),
     height: theme.spacing(7),
   },
+  textField: {
+    '& .MuiOutlinedInput-root': {
+      borderRadius: '1.3rem', // Change the borderRadius value to adjust the roundness of the outline
+    },
+  },
+  twitterButton: {
+    backgroundColor: '#1DA1F2',
+    color: 'white',
+    '&:hover': {
+      backgroundColor: '#1A91DA',
+    },
+    margin: theme.spacing(1),
+  },
 }));
 
 export default function App() {
@@ -69,9 +82,6 @@ export default function App() {
           '&$completed': {
             color: '#75bf6b',
           },
-          // '&$active': {
-          //   color: 'blue',
-          // },
         },
         active: {},
         completed: {},

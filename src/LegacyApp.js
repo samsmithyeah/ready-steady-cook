@@ -50,6 +50,7 @@ export default function LegacyApp(props) {
             history={history}
             inputRef={inputRef}
             handleRestartClick={handleRestartClick}
+            classes={classes}
           />
         </Route>
         <Route exact path="/results">

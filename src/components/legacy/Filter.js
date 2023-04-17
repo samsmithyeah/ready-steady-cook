@@ -1,4 +1,4 @@
-import { Button, IconButton, TextField, Grid } from '@material-ui/core';
+import { Button, IconButton, TextField, Grid, Box } from '@material-ui/core';
 import FilterChips from '../common/FilterChips.js';
 import TypingTitle from '../common/TypingTitle.js';
 import AddIcon from '@material-ui/icons/Add';
@@ -20,7 +20,7 @@ export default function Filter(props) {
   );
   const dispatch = useDispatch();
 
-  const { history, inputRef, handleRestartClick } = props;
+  const { history, inputRef, handleRestartClick, classes } = props;
 
   useEffect(() => {
     if (filters.length === 0) {
@@ -77,21 +77,25 @@ export default function Filter(props) {
         </Grid>
         <Grid item xs={12}>
           <form noValidate autoComplete="off" onSubmit={handleAddFilter}>
-            <TextField
-              inputRef={inputRef}
-              id="filter"
-              value={newFilter}
-              onChange={(e) => setNewFilter(e.target.value)}
-            />
-            <IconButton
-              disabled={newFilter.length === 0}
-              variant="contained"
-              color="primary"
-              type="submit"
-              id="add-filter"
-            >
-              <AddIcon />
-            </IconButton>
+            <Box sx={{ m: 1 }}>
+              <TextField
+                variant="outlined"
+                inputRef={inputRef}
+                id="filter"
+                value={newFilter}
+                onChange={(e) => setNewFilter(e.target.value)}
+                className={classes.textField}
+              />
+              <IconButton
+                disabled={newFilter.length === 0}
+                variant="contained"
+                color="primary"
+                type="submit"
+                id="add-filter"
+              >
+                <AddIcon />
+              </IconButton>
+            </Box>
           </form>
           <FilterChips onDelete={handleDeleteFilter} ingredients={filters} />
         </Grid>
