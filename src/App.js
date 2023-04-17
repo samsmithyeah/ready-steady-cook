@@ -30,6 +30,14 @@ const useStyles = makeStyles((theme) => ({
       borderRadius: '1.3rem', // Change the borderRadius value to adjust the roundness of the outline
     },
   },
+  twitterButton: {
+    backgroundColor: '#1DA1F2',
+    color: 'white',
+    '&:hover': {
+      backgroundColor: '#1A91DA',
+    },
+    margin: theme.spacing(1),
+  },
 }));
 
 export default function App() {

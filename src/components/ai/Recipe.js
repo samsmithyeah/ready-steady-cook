@@ -1,6 +1,7 @@
 import { Button, Grid, CircularProgress } from '@material-ui/core';
 import TypingTitle from '../common/TypingTitle';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
+import TwitterIcon from '@material-ui/icons/Twitter';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -18,6 +19,7 @@ export default function Recipe(props) {
     isError,
     setIsError,
     setActiveStep,
+    classes,
   } = props;
   const { uuid } = useParams();
 
@@ -95,6 +97,24 @@ export default function Recipe(props) {
         -1,
       )} you could make...`;
     }
+  }
+
+  function createTweet() {
+    const recipeTitle = encodeURIComponent(recipeLatestVersion.title);
+    const url = window.location.href;
+    const ingredientsHashtags = ingredientsLatestVersion
+      .map((ingredient) => encodeURIComponent(ingredient.toLowerCase()))
+      .join(',');
+    const hashtags = `recipe,cooking,ai,${ingredientsHashtags}`;
+    const text = `Check out this delicious AI generated recipe for ${recipeTitle}!
+    `;
+
+    return `https://twitter.com/intent/tweet?text=${text}&url=${url}&hashtags=${hashtags}`;
+  }
+
+  function handleShareClick() {
+    const tweetUrl = createTweet();
+    window.open(tweetUrl, '_blank');
   }
 
   return (
@@ -186,6 +206,13 @@ export default function Recipe(props) {
         >
           <Button onClick={handleRestartClick} endIcon={<AutorenewIcon />}>
             Start again
+          </Button>
+          <Button
+            className={classes.twitterButton}
+            onClick={handleShareClick}
+            startIcon={<TwitterIcon />}
+          >
+            Share on Twitter
           </Button>
         </Grid>
       </Grid>

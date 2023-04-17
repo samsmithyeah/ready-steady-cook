@@ -110,6 +110,7 @@ export default function AiApp(props) {
             isError={isError}
             setIsError={setIsError}
             setActiveStep={setActiveStep}
+            classes={classes}
           />
         </Route>
       </Switch>
