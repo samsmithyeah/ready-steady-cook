@@ -6,7 +6,13 @@ import { search } from '../../redux/legacy/resultsSlice.js';
 import { addSearchTerm } from '../../redux/legacy/ingredientsSlice.js';
 
 export default function Search(props) {
-  const { history, inputRef, setIsLoading, handleRestartClick } = props;
+  const {
+    history,
+    inputRef,
+    setIsLoading,
+    handleRestartClick,
+    classes,
+  } = props;
 
   const { REACT_APP_APP_ID, REACT_APP_APP_KEY } = process.env;
 
@@ -52,10 +58,12 @@ export default function Search(props) {
 
           <Grid item xs={12}>
             <TextField
+              variant="outlined"
               inputRef={inputRef}
               id="search"
               inputProps={{ 'aria-label': 'search' }}
               onChange={handleSetSearchTerm}
+              className={classes.textField}
             />
           </Grid>
           <Grid item xs={12}>

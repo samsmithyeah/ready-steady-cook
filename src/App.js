@@ -74,9 +74,6 @@ export default function App() {
           '&$completed': {
             color: '#75bf6b',
           },
-          // '&$active': {
-          //   color: 'blue',
-          // },
         },
         active: {},
         completed: {},

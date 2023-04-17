@@ -26,6 +26,7 @@ export default function Generate(props) {
     setRecipeLatestVersion,
     setIsError,
     setActiveStep,
+    classes,
   } = props;
   const { ingredients, cuisineType } = useSelector((state) => state.input);
   const inputEl = useRef(null);
@@ -123,13 +124,14 @@ export default function Generate(props) {
                   <Grid item xs={12}>
                     <Box mt={1}>
                       <TextField
-                        fullWidth
+                        variant="outlined"
                         disabled={!customType}
                         inputProps={{ 'aria-label': 'cuisine-type' }}
                         onChange={handleSetCuisineType}
                         inputRef={inputEl}
                         onClick={() => setCustomType(true)}
                         value={cuisineType}
+                        className={classes.textField}
                       />
                     </Box>
                   </Grid>
