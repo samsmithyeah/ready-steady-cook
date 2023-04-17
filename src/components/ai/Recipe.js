@@ -82,7 +82,7 @@ export default function Recipe(props) {
       handleGenerateImage(recipeLatestVersion.title);
     }
     setOgTags();
-  }, [imgURL, recipeLatestVersion, handleGenerateImage, setOgTags]);
+  }, [imgURL, recipeLatestVersion, handleGenerateImage]);
 
   function resultsHeading() {
     if (ingredientsLatestVersion.length === 0) {
