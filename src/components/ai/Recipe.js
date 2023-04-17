@@ -81,7 +81,8 @@ export default function Recipe(props) {
     if (!imgURL && recipeLatestVersion) {
       handleGenerateImage(recipeLatestVersion.title);
     }
-  }, [imgURL, recipeLatestVersion, handleGenerateImage]);
+    setOgTags();
+  }, [imgURL, recipeLatestVersion, handleGenerateImage, setOgTags]);
 
   function resultsHeading() {
     if (ingredientsLatestVersion.length === 0) {
@@ -114,6 +115,36 @@ export default function Recipe(props) {
   function handleShareClick() {
     const tweetUrl = createTweet();
     window.open(tweetUrl, '_blank');
+  }
+
+  function setOgTags() {
+    if (recipeLatestVersion && imgURL) {
+      const ogTitle = document.createElement('meta');
+      ogTitle.setAttribute('property', 'og:title');
+      ogTitle.content = recipeLatestVersion.title;
+
+      const ogDescription = document.createElement('meta');
+      ogDescription.setAttribute('property', 'og:description');
+      ogDescription.content = recipeLatestVersion.description;
+
+      const ogUrl = document.createElement('meta');
+      ogUrl.setAttribute('property', 'og:url');
+      ogUrl.content = window.location.href;
+
+      const ogImage = document.createElement('meta');
+      ogImage.setAttribute('property', 'og:image');
+      ogImage.content = imgURL;
+
+      const ogType = document.createElement('meta');
+      ogType.setAttribute('property', 'og:type');
+      ogType.content = 'website';
+
+      document.head.appendChild(ogTitle);
+      document.head.appendChild(ogDescription);
+      document.head.appendChild(ogUrl);
+      document.head.appendChild(ogImage);
+      document.head.appendChild(ogType);
+    }
   }
 
   return (
