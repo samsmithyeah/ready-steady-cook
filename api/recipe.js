@@ -25,7 +25,18 @@ Include the following sections in the recipe:
 - Ingredients
 - Method
 
-Output the recipe in JSON format, with a key for each section (title, prepTime, cookTime, totalTime, servings, description, ingredients, method). Don't include numbers in the list steps.`;
+Output the recipe in JSON format, with a key for each section:
+
+title (string)
+prepTime (string)
+cookTime (string)
+totalTime (string)
+servings (string)
+description (string)
+ingredients (array of strings)
+method (array of strings)
+
+Don't include numbers in the list steps.`;
   const prompt = cuisineType
     ? `${basePrompt}
 
