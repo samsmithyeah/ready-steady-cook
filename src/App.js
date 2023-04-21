@@ -47,6 +47,9 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: 'white !important',
       color: 'black !important',
     },
+    '& .rcw-conversation-container': {
+      width: '400px', // Set the fixed width for the chat widget
+    },
   },
 }));
 

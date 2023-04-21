@@ -26,14 +26,11 @@ Method: ${recipeData.method.join('\n')}
     ...conversation,
   ];
 
-  console.log('messages:');
-  console.log(messages);
-
   const payload = {
     model: 'gpt-3.5-turbo-0301',
     messages: messages,
     temperature: 0.5,
-    max_tokens: 150,
+    max_tokens: 250,
   };
 
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -46,8 +43,6 @@ Method: ${recipeData.method.join('\n')}
   });
 
   const responseJson = await response.json();
-  console.log('responseJson:');
-  console.log(responseJson);
   const aiResponse = responseJson.choices[0].message.content;
 
   const responseBody = { aiResponse };
