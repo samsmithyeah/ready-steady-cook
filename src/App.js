@@ -38,6 +38,29 @@ const useStyles = makeStyles((theme) => ({
     },
     margin: theme.spacing(1),
   },
+  widgetContainer: {
+    '& .rcw-input': {
+      backgroundColor: theme.palette.background.paper,
+      color: theme.palette.text.primary,
+    },
+    '& .rcw-message': {
+      fontFamily: theme.typography.fontFamily,
+    },
+    '& .rcw-conversation-container': {
+      width: '400px',
+    },
+    '& .rcw-header': {
+      backgroundColor: grey[600],
+      fontFamily: theme.typography.fontFamily,
+    },
+    '& .rcw-message-text': {
+      backgroundColor: '#303030',
+      color: 'white',
+    },
+    '& .rcw-messages-container': {
+      backgroundColor: grey[100],
+    },
+  },
 }));
 
 export default function App() {

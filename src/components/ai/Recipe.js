@@ -1,10 +1,11 @@
 import { Button, Grid, CircularProgress } from '@material-ui/core';
 import TypingTitle from '../common/TypingTitle';
+import ChatWidget from './ChatWidget';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import supabase from '../../supabaseClient';
 
 export default function Recipe(props) {
@@ -25,6 +26,7 @@ export default function Recipe(props) {
 
   const { imgURL, recipe } = useSelector((state) => state.recipe);
   const { ingredients } = useSelector((state) => state.input);
+  const [showChatWidget, setShowChatWidget] = useState(false);
 
   useEffect(() => {
     async function fetchRecipeByUUID(uuid) {
@@ -82,6 +84,12 @@ export default function Recipe(props) {
       handleGenerateImage(recipeLatestVersion.title);
     }
   }, [imgURL, recipeLatestVersion, handleGenerateImage]);
+
+  useEffect(() => {
+    if (recipeLatestVersion) {
+      setShowChatWidget(true);
+    }
+  }, [recipeLatestVersion]);
 
   function resultsHeading() {
     if (ingredientsLatestVersion.length === 0) {
@@ -209,6 +217,12 @@ export default function Recipe(props) {
                 Share recipe on Twitter
               </Button>
             </Grid>
+            {showChatWidget && (
+              <ChatWidget
+                classes={classes}
+                recipeLatestVersion={recipeLatestVersion}
+              />
+            )}
           </>
         )}
         <Grid
