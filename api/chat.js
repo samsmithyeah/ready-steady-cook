@@ -8,7 +8,7 @@ export default async function chat(req) {
   const { recipeData, conversation } = reqJson;
   console.log(recipeData);
 
-  const initialPrompt = `You are a culinary expert AI. You give accurate answers to anything the user wants to know about the recipe. You are also happy to give your opinion and/or recommendations if required. The user is chatting with you about the following recipe:
+  const initialPrompt = `You are a world renowned chef, and you invented this recipe. You give accurate answers to anything the user wants to know about the recipe. You are also happy to give your opinion and/or recommendations if required. The user is chatting with you about the following recipe:
 
 Recipe: ${recipeData.title}
 Prep time: ${recipeData.prep_time}

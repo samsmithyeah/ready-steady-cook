@@ -43,8 +43,10 @@ export default function ChatWidget(props) {
     <div className={classes.widgetContainer}>
       <Widget
         handleNewUserMessage={handleNewUserMessage}
-        title="Live Chat"
-        subtitle="Ask us anything!"
+        emojis={true}
+        title="🤖 Recipe Chat 🤖"
+        subtitle="Ask the AI anything about your recipe!"
+        showTimeStamp={false}
       />
     </div>
   );

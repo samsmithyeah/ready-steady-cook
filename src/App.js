@@ -40,15 +40,25 @@ const useStyles = makeStyles((theme) => ({
   },
   widgetContainer: {
     '& .rcw-input': {
-      backgroundColor: 'white !important',
-      color: 'black !important',
+      backgroundColor: theme.palette.background.paper,
+      color: theme.palette.text.primary,
     },
     '& .rcw-message': {
-      backgroundColor: 'white !important',
-      color: 'black !important',
+      fontFamily: theme.typography.fontFamily,
     },
     '& .rcw-conversation-container': {
-      width: '400px', // Set the fixed width for the chat widget
+      width: '400px',
+    },
+    '& .rcw-header': {
+      backgroundColor: grey[600],
+      fontFamily: theme.typography.fontFamily,
+    },
+    '& .rcw-message-text': {
+      backgroundColor: '#303030',
+      color: 'white',
+    },
+    '& .rcw-messages-container': {
+      backgroundColor: grey[100],
     },
   },
 }));
