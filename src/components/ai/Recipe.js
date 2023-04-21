@@ -4,8 +4,10 @@ import AutorenewIcon from '@material-ui/icons/Autorenew';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import supabase from '../../supabaseClient';
+import { Widget, addResponseMessage } from 'react-chat-widget';
+import 'react-chat-widget/lib/styles.css';
 
 export default function Recipe(props) {
   const {
@@ -25,6 +27,14 @@ export default function Recipe(props) {
 
   const { imgURL, recipe } = useSelector((state) => state.recipe);
   const { ingredients } = useSelector((state) => state.input);
+  const [showChatWidget, setShowChatWidget] = useState(false);
+  const [conversation, setConversation] = useState([]);
+
+  useEffect(() => {
+    if (recipeLatestVersion) {
+      setShowChatWidget(true);
+    }
+  }, [recipeLatestVersion]);
 
   useEffect(() => {
     async function fetchRecipeByUUID(uuid) {
@@ -114,6 +124,36 @@ export default function Recipe(props) {
   function handleShareClick() {
     const tweetUrl = createTweet();
     window.open(tweetUrl, '_blank');
+  }
+
+  async function handleNewUserMessage(message) {
+    // Add the user message to the conversation
+    const newConversation = [
+      ...conversation,
+      { role: 'user', content: message },
+    ];
+    setConversation(newConversation);
+
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        recipeData: recipeLatestVersion,
+        conversation: newConversation,
+      }),
+    });
+
+    const responseJson = await response.json();
+    const aiResponse = responseJson.aiResponse;
+
+    // Add the AI response to the conversation
+    setConversation([
+      ...newConversation,
+      { role: 'assistant', content: aiResponse },
+    ]);
+    addResponseMessage(aiResponse);
   }
 
   return (
@@ -209,6 +249,15 @@ export default function Recipe(props) {
                 Share recipe on Twitter
               </Button>
             </Grid>
+            {showChatWidget && (
+              <div className={classes.widgetContainer}>
+                <Widget
+                  handleNewUserMessage={handleNewUserMessage}
+                  title="Live Chat"
+                  subtitle="Ask us anything!"
+                />
+              </div>
+            )}
           </>
         )}
         <Grid

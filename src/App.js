@@ -38,6 +38,16 @@ const useStyles = makeStyles((theme) => ({
     },
     margin: theme.spacing(1),
   },
+  widgetContainer: {
+    '& .rcw-input': {
+      backgroundColor: 'white !important',
+      color: 'black !important',
+    },
+    '& .rcw-message': {
+      backgroundColor: 'white !important',
+      color: 'black !important',
+    },
+  },
 }));
 
 export default function App() {
