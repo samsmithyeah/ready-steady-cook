@@ -111,7 +111,9 @@ export default function Recipe(props) {
     const recipeTitle = encodeURIComponent(recipeLatestVersion.title);
     const url = window.location.href;
     const ingredientsHashtags = ingredientsLatestVersion
-      .map((ingredient) => encodeURIComponent(ingredient.toLowerCase()))
+      .map((ingredient) =>
+        encodeURIComponent(ingredient.toLowerCase().replace(/\s+/g, '')),
+      )
       .join(',');
     const hashtags = `recipe,cooking,ai,${ingredientsHashtags}`;
     const text = `Check out this delicious AI generated recipe for ${recipeTitle}!`;
