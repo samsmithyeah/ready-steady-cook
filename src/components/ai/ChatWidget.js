@@ -1,11 +1,23 @@
-import { useState } from 'react';
 import { Widget, addResponseMessage, toggleMsgLoader } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
+import { generate, generateImage } from '../../redux/ai/recipeSlice.js';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function ChatWidget(props) {
-  const { recipeLatestVersion, classes } = props;
+  const {
+    recipeLatestVersion,
+    classes,
+    history,
+    setRecipeLatestVersion,
+    setIsNewRecipe,
+    conversation,
+    setConversation,
+    setIsUpdatedRecipe,
+  } = props;
 
-  const [conversation, setConversation] = useState([]);
+  const dispatch = useDispatch();
+
+  const { ingredients, cuisineType } = useSelector((state) => state.input);
 
   async function handleNewUserMessage(message) {
     // Add the user message to the conversation
@@ -28,15 +40,36 @@ export default function ChatWidget(props) {
     });
 
     const responseJson = await response.json();
-    const aiResponse = responseJson.aiResponse;
 
-    // Add the AI response to the conversation
-    setConversation([
-      ...newConversation,
-      { role: 'assistant', content: aiResponse },
-    ]);
-    addResponseMessage(aiResponse);
-    toggleMsgLoader();
+    if ('updatedRecipeJson' in responseJson) {
+      const { updatedRecipeJson, chatMessage, uuid } = responseJson;
+      setIsNewRecipe(true);
+      setIsUpdatedRecipe(true);
+      // dispatch(generate(updatedRecipeJson));
+      // dispatch(generateImage(''));
+      setRecipeLatestVersion({
+        ...JSON.parse(updatedRecipeJson),
+        input_ingredients: ingredients,
+      });
+      console.log('chatRecipe', recipeLatestVersion);
+      setConversation([
+        ...newConversation,
+        { role: 'assistant', content: chatMessage },
+      ]);
+      addResponseMessage(chatMessage);
+      toggleMsgLoader();
+      history.push(`/recipe/${uuid}`);
+    } else {
+      const aiResponse = responseJson.aiResponse;
+
+      // Add the AI response to the conversation
+      setConversation([
+        ...newConversation,
+        { role: 'assistant', content: aiResponse },
+      ]);
+      addResponseMessage(aiResponse);
+      toggleMsgLoader();
+    }
   }
 
   return (

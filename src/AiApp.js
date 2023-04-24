@@ -24,9 +24,10 @@ export default function AiApp(props) {
 
   const [isNewRecipe, setIsNewRecipe] = useState(false);
   const [customType, setCustomType] = useState(false);
-  const [recipeLatestVersion, setRecipeLatestVersion] = useState(null);
+  const [recipeLatestVersion, setRecipeLatestVersion] = useState({});
   const [ingredientsLatestVersion, setIngredientsLatestVersion] = useState([]);
   const [isError, setIsError] = useState(false);
+  const [conversation, setConversation] = useState([]);
 
   const steps = ['Choose ingredients', 'Choose cuisine type', 'Recipe'];
 
@@ -95,6 +96,7 @@ export default function AiApp(props) {
               setRecipeLatestVersion={setRecipeLatestVersion}
               setIsError={setIsError}
               setActiveStep={setActiveStep}
+              setConversation={setConversation}
             />
           )}
         </Route>
@@ -111,6 +113,10 @@ export default function AiApp(props) {
             setIsError={setIsError}
             setActiveStep={setActiveStep}
             classes={classes}
+            history={history}
+            setIsNewRecipe={setIsNewRecipe}
+            conversation={conversation}
+            setConversation={setConversation}
           />
         </Route>
       </Switch>

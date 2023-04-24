@@ -21,12 +21,17 @@ export default function Recipe(props) {
     setIsError,
     setActiveStep,
     classes,
+    history,
+    setIsNewRecipe,
+    conversation,
+    setConversation,
   } = props;
   const { uuid } = useParams();
 
   const { imgURL, recipe } = useSelector((state) => state.recipe);
-  const { ingredients } = useSelector((state) => state.input);
+  const { ingredients, cuisineType } = useSelector((state) => state.input);
   const [showChatWidget, setShowChatWidget] = useState(false);
+  const [isUpdatedRecipe, setIsUpdatedRecipe] = useState(false);
 
   useEffect(() => {
     async function fetchRecipeByUUID(uuid) {
@@ -48,8 +53,11 @@ export default function Recipe(props) {
         const data = await fetchRecipeByUUID(uuid);
         setRecipeLatestVersion(data);
         setActiveStep(3);
-      } else if (recipe.length > 0) {
-        setRecipeLatestVersion(JSON.parse(recipe));
+      } else if (!isUpdatedRecipe && Object.keys(recipe).length > 0) {
+        setRecipeLatestVersion({
+          ...recipe,
+          input_ingredients: ingredientsLatestVersion,
+        });
         setActiveStep(3);
       }
     }
@@ -63,6 +71,9 @@ export default function Recipe(props) {
     setRecipeLatestVersion,
     setIsError,
     setActiveStep,
+    cuisineType,
+    ingredientsLatestVersion,
+    isUpdatedRecipe,
   ]);
 
   useEffect(() => {
@@ -81,7 +92,7 @@ export default function Recipe(props) {
 
   useEffect(() => {
     if (!imgURL && recipeLatestVersion) {
-      handleGenerateImage(recipeLatestVersion.title);
+      //handleGenerateImage(recipeLatestVersion.title);
     }
   }, [imgURL, recipeLatestVersion, handleGenerateImage]);
 
@@ -223,6 +234,13 @@ export default function Recipe(props) {
               <ChatWidget
                 classes={classes}
                 recipeLatestVersion={recipeLatestVersion}
+                setRecipeLatestVersion={setRecipeLatestVersion}
+                history={history}
+                setIsNewRecipe={setIsNewRecipe}
+                conversation={conversation}
+                setConversation={setConversation}
+                data-testid="chat-widget"
+                setIsUpdatedRecipe={setIsUpdatedRecipe}
               />
             )}
           </>
