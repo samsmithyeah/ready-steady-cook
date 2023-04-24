@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import supabase from '../src/supabaseClient';
 
 export const config = {
   runtime: 'edge',
@@ -8,7 +9,7 @@ export const config = {
 export default async function chat(req) {
   const reqJson = await req.json();
   console.log(reqJson);
-  const { recipeData, conversation } = reqJson;
+  const { recipeData, inputIngredients, cuisineType, conversation } = reqJson;
 
   const initialPrompt = `You are a world renowned chef, and you invented this recipe based on some ingredients the user has given you. The user may have also told you a cuisine type to follow. You give accurate answers to anything the user wants to know about the recipe. You are also happy to give your opinion and/or recommendations if required. The user is chatting with you about the following recipe:
 
@@ -21,9 +22,10 @@ Description: ${recipeData.description}
 Ingredients: ${recipeData.ingredients.join(', ')}
 Method: ${recipeData.method.join('\n')}
 User input ingredients: ${
-    recipeData.input_ingredients.join(', ') ||
-    recipeData.inputIngredients.join(', ')
+    recipeData.input_ingredients.join(', ') || inputIngredients.join(', ')
   }
+
+User input cuisine type: ${recipeData.input_cuisine_type || cuisineType}
 
 You also have the ability to:
 - Modify the recipe
@@ -40,6 +42,8 @@ Include the following sections in the recipe:
 - Brief description, perhaps including the origin of the dish
 - Ingredients
 - Method
+- User input ingredients
+- User input cuisine type
 
 Output the recipe in JSON format, with a key for each section:
 
@@ -51,6 +55,8 @@ servings (string)
 description (string)
 ingredients (array of strings)
 method (array of strings)
+inputIngredients (array of strings)
+inputCuisineType (string)
 
 Don't include numbers in the list steps.
 `;
@@ -92,6 +98,23 @@ Don't include numbers in the list steps.
     const uuid = uuidv4();
     const chatMessage =
       'I have generated a new recipe for you. You should be redirected to the new recipe shortly.';
+    const { data, error } = await supabase.from('recipes').insert([
+      {
+        id: uuid,
+        title: updatedRecipeJson.title,
+        prep_time: updatedRecipeJson.prepTime,
+        cook_time: updatedRecipeJson.cookTime,
+        total_time: updatedRecipeJson.totalTime,
+        servings: updatedRecipeJson.servings,
+        description: updatedRecipeJson.description,
+        ingredients: updatedRecipeJson.ingredients,
+        method: updatedRecipeJson.method,
+      },
+    ]);
+
+    if (error) {
+      console.error('Error storing recipe in Supabase:', error);
+    }
     responseBody = { uuid, chatMessage, updatedRecipeJson };
   } else {
     responseBody = { aiResponse };

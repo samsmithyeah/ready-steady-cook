@@ -28,6 +28,7 @@ export default function Generate(props) {
     setActiveStep,
     classes,
     setConversation,
+    conversation,
   } = props;
   const { ingredients, cuisineType } = useSelector((state) => state.input);
   const inputEl = useRef(null);
@@ -45,7 +46,7 @@ export default function Generate(props) {
     event.preventDefault();
     setIsNewRecipe(true);
     setIsError(false);
-    setConversation([]);
+    setConversation([{}]);
     dispatch(generate({}));
     dispatch(generateImage(''));
     setRecipeLatestVersion(null);

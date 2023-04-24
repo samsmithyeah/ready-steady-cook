@@ -41,6 +41,7 @@ export default function AiApp(props) {
     setCustomType(false);
     setRecipeLatestVersion(null);
     setIngredientsLatestVersion([]);
+    setConversation([]);
     setIsError(false);
     setIsNewRecipe(false);
     history.push('/');
@@ -97,6 +98,7 @@ export default function AiApp(props) {
               setIsError={setIsError}
               setActiveStep={setActiveStep}
               setConversation={setConversation}
+              conversation={conversation}
             />
           )}
         </Route>

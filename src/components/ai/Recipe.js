@@ -29,7 +29,7 @@ export default function Recipe(props) {
   const { uuid } = useParams();
 
   const { imgURL, recipe } = useSelector((state) => state.recipe);
-  const { ingredients, cuisineType } = useSelector((state) => state.input);
+  const { ingredients } = useSelector((state) => state.input);
   const [showChatWidget, setShowChatWidget] = useState(false);
   const [isUpdatedRecipe, setIsUpdatedRecipe] = useState(false);
 
@@ -53,11 +53,8 @@ export default function Recipe(props) {
         const data = await fetchRecipeByUUID(uuid);
         setRecipeLatestVersion(data);
         setActiveStep(3);
-      } else if (!isUpdatedRecipe && Object.keys(recipe).length > 0) {
-        setRecipeLatestVersion({
-          ...recipe,
-          input_ingredients: ingredientsLatestVersion,
-        });
+      } else if (recipe.length > 0 && !isUpdatedRecipe) {
+        setRecipeLatestVersion(JSON.parse(recipe));
         setActiveStep(3);
       }
     }
@@ -71,8 +68,6 @@ export default function Recipe(props) {
     setRecipeLatestVersion,
     setIsError,
     setActiveStep,
-    cuisineType,
-    ingredientsLatestVersion,
     isUpdatedRecipe,
   ]);
 
@@ -92,7 +87,7 @@ export default function Recipe(props) {
 
   useEffect(() => {
     if (!imgURL && recipeLatestVersion) {
-      //handleGenerateImage(recipeLatestVersion.title);
+      handleGenerateImage(recipeLatestVersion.title);
     }
   }, [imgURL, recipeLatestVersion, handleGenerateImage]);
 

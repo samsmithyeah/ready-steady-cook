@@ -35,6 +35,8 @@ export default function ChatWidget(props) {
       },
       body: JSON.stringify({
         recipeData: recipeLatestVersion,
+        inputIngredients: ingredients,
+        cuisineType,
         conversation: newConversation,
       }),
     });
@@ -43,15 +45,12 @@ export default function ChatWidget(props) {
 
     if ('updatedRecipeJson' in responseJson) {
       const { updatedRecipeJson, chatMessage, uuid } = responseJson;
-      setIsNewRecipe(true);
+      //setIsNewRecipe(true);
       setIsUpdatedRecipe(true);
-      // dispatch(generate(updatedRecipeJson));
+      //dispatch(generate(updatedRecipeJson));
       // dispatch(generateImage(''));
-      setRecipeLatestVersion({
-        ...JSON.parse(updatedRecipeJson),
-        input_ingredients: ingredients,
-      });
-      console.log('chatRecipe', recipeLatestVersion);
+      setRecipeLatestVersion(updatedRecipeJson);
+      //console.log('chatRecipe', recipeLatestVersion);
       setConversation([
         ...newConversation,
         { role: 'assistant', content: chatMessage },
