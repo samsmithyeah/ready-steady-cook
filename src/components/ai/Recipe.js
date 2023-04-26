@@ -56,6 +56,8 @@ export default function Recipe(props) {
       } else if (recipe.length > 0 && !isUpdatedRecipe) {
         setRecipeLatestVersion(JSON.parse(recipe));
         setActiveStep(3);
+      } else {
+        setIsNewRecipe(true);
       }
     }
 
@@ -69,6 +71,7 @@ export default function Recipe(props) {
     setIsError,
     setActiveStep,
     isUpdatedRecipe,
+    setIsNewRecipe,
   ]);
 
   useEffect(() => {
@@ -89,7 +92,7 @@ export default function Recipe(props) {
     if (!imgURL && recipeLatestVersion) {
       handleGenerateImage(recipeLatestVersion.title);
     }
-  }, [imgURL, recipeLatestVersion, handleGenerateImage]);
+  }, [imgURL, recipeLatestVersion, handleGenerateImage, isUpdatedRecipe]);
 
   useEffect(() => {
     if (recipeLatestVersion) {

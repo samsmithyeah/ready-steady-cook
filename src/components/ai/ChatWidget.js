@@ -45,12 +45,8 @@ export default function ChatWidget(props) {
 
     if ('updatedRecipeJson' in responseJson) {
       const { updatedRecipeJson, chatMessage, uuid } = responseJson;
-      //setIsNewRecipe(true);
       setIsUpdatedRecipe(true);
-      //dispatch(generate(updatedRecipeJson));
-      // dispatch(generateImage(''));
       setRecipeLatestVersion(updatedRecipeJson);
-      //console.log('chatRecipe', recipeLatestVersion);
       setConversation([
         ...newConversation,
         { role: 'assistant', content: chatMessage },

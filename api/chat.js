@@ -22,10 +22,14 @@ Description: ${recipeData.description}
 Ingredients: ${recipeData.ingredients.join(', ')}
 Method: ${recipeData.method.join('\n')}
 User input ingredients: ${
-    recipeData.input_ingredients.join(', ') || inputIngredients.join(', ')
+    recipeData.input_ingredients
+      ? recipeData.input_ingredients.join(', ')
+      : inputIngredients.join(', ')
   }
 
-User input cuisine type: ${recipeData.input_cuisine_type || cuisineType}
+User input cuisine type: ${
+    recipeData.input_cuisine_type ? recipeData.input_cuisine_type : cuisineType
+  }
 
 You also have the ability to:
 - Modify the recipe
@@ -59,14 +63,14 @@ inputIngredients (array of strings)
 inputCuisineType (string)
 
 Don't include numbers in the list steps.
+
+Before you output the recipe, you should check that the recipe is in json format. It must always be in json format.
 `;
 
   const messages = [
     { role: 'system', content: initialPrompt },
     ...conversation,
   ];
-
-  console.log(messages);
 
   const payload = {
     model: 'gpt-3.5-turbo-0301',
@@ -86,6 +90,7 @@ Don't include numbers in the list steps.
 
   const responseJson = await response.json();
   const aiResponse = responseJson.choices[0].message.content;
+  console.log(aiResponse);
   let responseBody;
   if (aiResponse.includes('title')) {
     const startIndex = aiResponse.indexOf('{');
@@ -97,7 +102,7 @@ Don't include numbers in the list steps.
     const updatedRecipeJson = JSON.parse(updatedRecipe);
     const uuid = uuidv4();
     const chatMessage =
-      'I have generated a new recipe for you. You should be redirected to the new recipe shortly.';
+      'I have generated a new recipe for you. What do you think?';
     const { data, error } = await supabase.from('recipes').insert([
       {
         id: uuid,
@@ -109,6 +114,9 @@ Don't include numbers in the list steps.
         description: updatedRecipeJson.description,
         ingredients: updatedRecipeJson.ingredients,
         method: updatedRecipeJson.method,
+        input_ingredients: updatedRecipeJson.inputIngredients,
+        input_cuisine_type: updatedRecipeJson.inputCuisineType,
+        is_regenerated: true,
       },
     ]);
 

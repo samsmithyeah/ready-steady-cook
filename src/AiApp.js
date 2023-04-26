@@ -1,13 +1,14 @@
 import { Route, Switch } from 'react-router-dom';
 import { CircularProgress } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Generate from './components/ai/Generate';
 import Recipe from './components/ai/Recipe';
 import ChooseIngredients from './components/ai/Ingredients';
 import Progress from './components/common/Progress';
 import { clearIngredients, addCuisineType } from './redux/ai/inputSlice.js';
 import { generate, generateImage } from './redux/ai/recipeSlice';
+import { dropMessages } from 'react-chat-widget';
 
 export default function AiApp(props) {
   const {
@@ -24,7 +25,7 @@ export default function AiApp(props) {
 
   const [isNewRecipe, setIsNewRecipe] = useState(false);
   const [customType, setCustomType] = useState(false);
-  const [recipeLatestVersion, setRecipeLatestVersion] = useState({});
+  const [recipeLatestVersion, setRecipeLatestVersion] = useState(null);
   const [ingredientsLatestVersion, setIngredientsLatestVersion] = useState([]);
   const [isError, setIsError] = useState(false);
   const [conversation, setConversation] = useState([]);
@@ -42,26 +43,30 @@ export default function AiApp(props) {
     setRecipeLatestVersion(null);
     setIngredientsLatestVersion([]);
     setConversation([]);
+    dropMessages();
     setIsError(false);
     setIsNewRecipe(false);
     history.push('/');
   }
 
-  async function handleGenerateImage(recipeTitle) {
-    try {
-      const response = await fetch(REACT_APP_IMAGE_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ recipeTitle }),
-      });
-      const { imageURL } = await response.json();
-      dispatch(generateImage(imageURL));
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  const handleGenerateImage = useCallback(
+    async (recipeTitle) => {
+      try {
+        const response = await fetch(REACT_APP_IMAGE_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ recipeTitle }),
+        });
+        const { imageURL } = await response.json();
+        dispatch(generateImage(imageURL));
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [REACT_APP_IMAGE_URL, dispatch],
+  );
 
   return (
     <>
