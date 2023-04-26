@@ -14,9 +14,7 @@ import ToolBar from './components/common/Toolbar/ToolBar.js';
 import { useSelector } from 'react-redux';
 import { inject } from '@vercel/analytics';
 
-if (!process.env.REACT_APP_TEST) {
-  inject();
-}
+!process.env.REACT_APP_TEST && inject();
 
 const useStyles = makeStyles((theme) => ({
   root: {
