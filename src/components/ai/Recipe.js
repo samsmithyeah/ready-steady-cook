@@ -21,12 +21,17 @@ export default function Recipe(props) {
     setIsError,
     setActiveStep,
     classes,
+    history,
+    setIsNewRecipe,
+    conversation,
+    setConversation,
   } = props;
   const { uuid } = useParams();
 
   const { imgURL, recipe } = useSelector((state) => state.recipe);
   const { ingredients } = useSelector((state) => state.input);
   const [showChatWidget, setShowChatWidget] = useState(false);
+  const [isUpdatedRecipe, setIsUpdatedRecipe] = useState(false);
 
   useEffect(() => {
     async function fetchRecipeByUUID(uuid) {
@@ -48,9 +53,11 @@ export default function Recipe(props) {
         const data = await fetchRecipeByUUID(uuid);
         setRecipeLatestVersion(data);
         setActiveStep(3);
-      } else if (recipe.length > 0) {
+      } else if (recipe.length > 0 && !isUpdatedRecipe) {
         setRecipeLatestVersion(JSON.parse(recipe));
         setActiveStep(3);
+      } else {
+        setIsNewRecipe(true);
       }
     }
 
@@ -63,6 +70,8 @@ export default function Recipe(props) {
     setRecipeLatestVersion,
     setIsError,
     setActiveStep,
+    isUpdatedRecipe,
+    setIsNewRecipe,
   ]);
 
   useEffect(() => {
@@ -83,7 +92,7 @@ export default function Recipe(props) {
     if (!imgURL && recipeLatestVersion) {
       handleGenerateImage(recipeLatestVersion.title);
     }
-  }, [imgURL, recipeLatestVersion, handleGenerateImage]);
+  }, [imgURL, recipeLatestVersion, handleGenerateImage, isUpdatedRecipe]);
 
   useEffect(() => {
     if (recipeLatestVersion) {
@@ -223,6 +232,13 @@ export default function Recipe(props) {
               <ChatWidget
                 classes={classes}
                 recipeLatestVersion={recipeLatestVersion}
+                setRecipeLatestVersion={setRecipeLatestVersion}
+                history={history}
+                setIsNewRecipe={setIsNewRecipe}
+                conversation={conversation}
+                setConversation={setConversation}
+                data-testid="chat-widget"
+                setIsUpdatedRecipe={setIsUpdatedRecipe}
               />
             )}
           </>

@@ -1,11 +1,19 @@
-import { useState } from 'react';
 import { Widget, addResponseMessage, toggleMsgLoader } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
+import { useSelector } from 'react-redux';
 
 export default function ChatWidget(props) {
-  const { recipeLatestVersion, classes } = props;
+  const {
+    recipeLatestVersion,
+    classes,
+    history,
+    setRecipeLatestVersion,
+    conversation,
+    setConversation,
+    setIsUpdatedRecipe,
+  } = props;
 
-  const [conversation, setConversation] = useState([]);
+  const { ingredients, cuisineType } = useSelector((state) => state.input);
 
   async function handleNewUserMessage(message) {
     // Add the user message to the conversation
@@ -23,20 +31,36 @@ export default function ChatWidget(props) {
       },
       body: JSON.stringify({
         recipeData: recipeLatestVersion,
+        inputIngredients: ingredients,
+        cuisineType,
         conversation: newConversation,
       }),
     });
 
     const responseJson = await response.json();
-    const aiResponse = responseJson.aiResponse;
 
-    // Add the AI response to the conversation
-    setConversation([
-      ...newConversation,
-      { role: 'assistant', content: aiResponse },
-    ]);
-    addResponseMessage(aiResponse);
-    toggleMsgLoader();
+    if ('updatedRecipeJson' in responseJson) {
+      const { updatedRecipeJson, chatMessage, uuid } = responseJson;
+      setIsUpdatedRecipe(true);
+      setRecipeLatestVersion(updatedRecipeJson);
+      setConversation([
+        ...newConversation,
+        { role: 'assistant', content: chatMessage },
+      ]);
+      addResponseMessage(chatMessage);
+      toggleMsgLoader();
+      history.push(`/recipe/${uuid}`);
+    } else {
+      const aiResponse = responseJson.aiResponse;
+
+      // Add the AI response to the conversation
+      setConversation([
+        ...newConversation,
+        { role: 'assistant', content: aiResponse },
+      ]);
+      addResponseMessage(aiResponse);
+      toggleMsgLoader();
+    }
   }
 
   return (
