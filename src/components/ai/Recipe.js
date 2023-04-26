@@ -145,7 +145,7 @@ export default function Recipe(props) {
         }}
       >
         <Grid item xs={12} style={{ textAlign: 'center' }}>
-          {ingredientsLatestVersion.length > 0 && (
+          {ingredientsLatestVersion && ingredientsLatestVersion.length > 0 && (
             <TypingTitle text={resultsHeading()} />
           )}
           <br />
@@ -239,6 +239,8 @@ export default function Recipe(props) {
                 setConversation={setConversation}
                 data-testid="chat-widget"
                 setIsUpdatedRecipe={setIsUpdatedRecipe}
+                setIsError={setIsError}
+                setIngredientsLatestVersion={setIngredientsLatestVersion}
               />
             )}
           </>
