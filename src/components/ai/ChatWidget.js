@@ -1,7 +1,6 @@
 import { Widget, addResponseMessage, toggleMsgLoader } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
-import { generate, generateImage } from '../../redux/ai/recipeSlice.js';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 export default function ChatWidget(props) {
   const {
@@ -9,13 +8,10 @@ export default function ChatWidget(props) {
     classes,
     history,
     setRecipeLatestVersion,
-    setIsNewRecipe,
     conversation,
     setConversation,
     setIsUpdatedRecipe,
   } = props;
-
-  const dispatch = useDispatch();
 
   const { ingredients, cuisineType } = useSelector((state) => state.input);
 
