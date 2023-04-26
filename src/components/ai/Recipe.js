@@ -151,7 +151,7 @@ export default function Recipe(props) {
           <br />
         </Grid>
         {isError ? (
-          <TypingTitle text={resultsHeading()} />
+          <TypingTitle text="Something went wrong. Please try again." />
         ) : !recipeLatestVersion ? (
           <Grid
             item
