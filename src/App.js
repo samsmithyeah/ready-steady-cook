@@ -12,6 +12,9 @@ import AiApp from './AiApp.js';
 import LegacyApp from './LegacyApp.js';
 import ToolBar from './components/common/Toolbar/ToolBar.js';
 import { useSelector } from 'react-redux';
+import { inject } from '@vercel/analytics';
+
+!process.env.REACT_APP_TEST && inject();
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -11,6 +11,8 @@ export default function ChatWidget(props) {
     conversation,
     setConversation,
     setIsUpdatedRecipe,
+    setIsError,
+    setIngredientsLatestVersion,
   } = props;
 
   const { ingredients, cuisineType } = useSelector((state) => state.input);
@@ -24,25 +26,33 @@ export default function ChatWidget(props) {
     ];
     setConversation(newConversation);
 
-    const response = await fetch('/api/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        recipeData: recipeLatestVersion,
-        inputIngredients: ingredients,
-        cuisineType,
-        conversation: newConversation,
-      }),
-    });
+    let responseJson;
 
-    const responseJson = await response.json();
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          recipeData: recipeLatestVersion,
+          inputIngredients: ingredients,
+          cuisineType,
+          conversation: newConversation,
+        }),
+      });
+
+      responseJson = await response.json();
+    } catch (error) {
+      setIsError(true);
+      console.error(error);
+    }
 
     if ('updatedRecipeJson' in responseJson) {
       const { updatedRecipeJson, chatMessage, uuid } = responseJson;
       setIsUpdatedRecipe(true);
       setRecipeLatestVersion(updatedRecipeJson);
+      setIngredientsLatestVersion(updatedRecipeJson.inputIngredients);
       setConversation([
         ...newConversation,
         { role: 'assistant', content: chatMessage },
@@ -68,8 +78,8 @@ export default function ChatWidget(props) {
       <Widget
         handleNewUserMessage={handleNewUserMessage}
         emojis={true}
-        title="🤖 Recipe Chat 🤖"
-        subtitle="Ask the AI anything about your recipe!"
+        title="🤖 AI Chef Chat 🤖"
+        subtitle="Ask the AI anything about your recipe! You can even ask it to regenerate the recipe for you if there are any specific changes you'd like to see."
         showTimeStamp={false}
       />
     </div>

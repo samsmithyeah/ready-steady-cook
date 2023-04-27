@@ -65,6 +65,7 @@ export default function Generate(props) {
       const { recipe } = await response.json();
       dispatch(generate(recipe));
     } catch (error) {
+      setIsError(true);
       console.error(error);
     }
   }
