@@ -7,6 +7,8 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import supabase from '../../supabaseClient';
+import { useDispatch } from 'react-redux';
+import { generateImage } from '../../redux/ai/recipeSlice';
 
 export default function Recipe(props) {
   const {
@@ -32,6 +34,8 @@ export default function Recipe(props) {
   const { ingredients } = useSelector((state) => state.input);
   const [showChatWidget, setShowChatWidget] = useState(false);
   const [isUpdatedRecipe, setIsUpdatedRecipe] = useState(false);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function fetchRecipeByUUID(uuid) {
@@ -90,9 +94,23 @@ export default function Recipe(props) {
 
   useEffect(() => {
     if (!imgURL && recipeLatestVersion) {
-      handleGenerateImage(recipeLatestVersion.title);
+      // Check if the image_url is available in the recipeLatestVersion object
+      if (recipeLatestVersion.image_url) {
+        // If it is, use the existing image_url
+        dispatch(generateImage(recipeLatestVersion.image_url));
+      } else {
+        // If it's not, call the handleGenerateImage function to generate a new image
+        handleGenerateImage(recipeLatestVersion.title, uuid);
+      }
     }
-  }, [imgURL, recipeLatestVersion, handleGenerateImage, isUpdatedRecipe]);
+  }, [
+    imgURL,
+    recipeLatestVersion,
+    handleGenerateImage,
+    isUpdatedRecipe,
+    uuid,
+    dispatch,
+  ]);
 
   useEffect(() => {
     if (recipeLatestVersion) {
