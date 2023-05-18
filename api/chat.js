@@ -8,7 +8,7 @@ export const config = {
 
 export default async function chat(req) {
   const reqJson = await req.json();
-  console.log(reqJson);
+  //console.log(reqJson);
   const { recipeData, inputIngredients, cuisineType, conversation } = reqJson;
 
   const initialPrompt = `You are a world renowned chef, and you invented this recipe based on some ingredients the user has given you. The user may have also told you a cuisine type to follow. You give accurate answers to anything the user wants to know about the recipe. You are also happy to give your opinion and/or recommendations if required. The user is chatting with you about the following recipe:
@@ -90,9 +90,8 @@ Before you output the recipe, you should check that the recipe is in json format
 
   const responseJson = await response.json();
   const aiResponse = responseJson.choices[0].message.content;
-  console.log(aiResponse);
   let responseBody;
-  if (aiResponse.includes('title')) {
+  if (aiResponse.includes('title' && 'prepTime' && 'cookTime' && 'totalTime')) {
     const startIndex = aiResponse.indexOf('{');
     const endIndex = aiResponse.lastIndexOf('}');
     const updatedRecipe =

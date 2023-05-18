@@ -11,8 +11,8 @@ export default function ChatWidget(props) {
     conversation,
     setConversation,
     setIsUpdatedRecipe,
-    setIsError,
     setIngredientsLatestVersion,
+    handleGenerateImage,
   } = props;
 
   const { ingredients, cuisineType } = useSelector((state) => state.input);
@@ -20,10 +20,7 @@ export default function ChatWidget(props) {
   async function handleNewUserMessage(message) {
     // Add the user message to the conversation
     toggleMsgLoader();
-    const newConversation = [
-      ...conversation,
-      { role: 'user', content: message },
-    ];
+    let newConversation = [...conversation, { role: 'user', content: message }];
     setConversation(newConversation);
 
     let responseJson;
@@ -44,7 +41,6 @@ export default function ChatWidget(props) {
 
       responseJson = await response.json();
     } catch (error) {
-      setIsError(true);
       console.error(error);
     }
 
@@ -53,13 +49,32 @@ export default function ChatWidget(props) {
       setIsUpdatedRecipe(true);
       setRecipeLatestVersion(updatedRecipeJson);
       setIngredientsLatestVersion(updatedRecipeJson.inputIngredients);
-      setConversation([
-        ...newConversation,
+      const newRecipePrompt = `The updated recipe (which you generated) is as follows:
+
+Title: ${updatedRecipeJson.title}
+Prep time: ${updatedRecipeJson.prepTime}
+Cook time: ${updatedRecipeJson.cookTime}
+Total time: ${updatedRecipeJson.totalTime}
+Servings: ${updatedRecipeJson.servings}
+Description: ${updatedRecipeJson.description}
+Ingredients: ${updatedRecipeJson.ingredients.join(', ')}
+Method: ${updatedRecipeJson.method.join('\n')}
+
+Remember, you are a world-renowned chef, and you have the ability to:
+- Modify the recipe
+- Generate a new recipe
+
+Which ONLY WHEN ASKED TO DO BY THE USER you must output in json format (as described in your initial prompt).`;
+      newConversation = [
+        ...conversation,
         { role: 'assistant', content: chatMessage },
-      ]);
+        { role: 'system', content: newRecipePrompt },
+      ];
+      setConversation(newConversation);
       addResponseMessage(chatMessage);
       toggleMsgLoader();
       history.push(`/recipe/${uuid}`);
+      handleGenerateImage(updatedRecipeJson.title, uuid);
     } else {
       const aiResponse = responseJson.aiResponse;
 

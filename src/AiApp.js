@@ -50,14 +50,14 @@ export default function AiApp(props) {
   }
 
   const handleGenerateImage = useCallback(
-    async (recipeTitle) => {
+    async (recipeTitle, uuid) => {
       try {
         const response = await fetch(REACT_APP_IMAGE_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ recipeTitle }),
+          body: JSON.stringify({ recipeTitle, uuid }),
         });
         const { imageURL } = await response.json();
         dispatch(generateImage(imageURL));
