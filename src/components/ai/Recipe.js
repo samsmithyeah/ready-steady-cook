@@ -3,11 +3,10 @@ import TypingTitle from '../common/TypingTitle';
 import ChatWidget from './ChatWidget';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import TwitterIcon from '@material-ui/icons/Twitter';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import supabase from '../../supabaseClient';
-import { useDispatch } from 'react-redux';
 import { generateImage } from '../../redux/ai/recipeSlice';
 
 export default function Recipe(props) {
@@ -93,7 +92,7 @@ export default function Recipe(props) {
   ]);
 
   useEffect(() => {
-    if (!imgURL && recipeLatestVersion) {
+    if (!imgURL && recipeLatestVersion && !isUpdatedRecipe) {
       // Check if the image_url is available in the recipeLatestVersion object
       if (recipeLatestVersion.image_url) {
         // If it is, use the existing image_url
@@ -257,8 +256,8 @@ export default function Recipe(props) {
                 setConversation={setConversation}
                 data-testid="chat-widget"
                 setIsUpdatedRecipe={setIsUpdatedRecipe}
-                setIsError={setIsError}
                 setIngredientsLatestVersion={setIngredientsLatestVersion}
+                handleGenerateImage={handleGenerateImage}
               />
             )}
           </>

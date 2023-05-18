@@ -68,7 +68,7 @@ export default async function image(req) {
       // Fetch the list of images from Supabase Storage
       const { data: fileList, error: listError } = await supabase.storage
         .from('recipe-images')
-        .list('', { limit: 0 });
+        .list('', { limit: limit });
 
       if (listError) {
         console.error(
