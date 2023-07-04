@@ -48,20 +48,22 @@ The recipe is as follows:`
 The recipe is as follows:`;
 
   const payload = {
-    model: 'gpt-3.5-turbo-0301',
     messages: [{ role: 'user', content: prompt }],
     temperature: 0.5,
     max_tokens: 1000,
   };
 
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${process.env.OPENAI_API_KEY ?? ''}`,
+  const response = await fetch(
+    'https://sam-openai-instance.openai.azure.com/openai/deployments/gpt-35-turbo/chat/completions?api-version=2023-06-01-preview',
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'api-key': process.env.AZURE_OPENAI_API_KEY,
+      },
+      method: 'POST',
+      body: JSON.stringify(payload),
     },
-    method: 'POST',
-    body: JSON.stringify(payload),
-  });
+  );
 
   const responseJson = await response.json();
   const recipe = responseJson.choices[0].message.content;
